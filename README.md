@@ -1,4 +1,5 @@
 # ECE 4525 Final Project, Fall 2019, Chris Blackburn
+Click [here](https://chris-blackburn.github.io/ECE4525-Final/) to play!
 
 ### Running the game locally
 I started using p5.js for this project (instead of kahn academy). I wanted to
