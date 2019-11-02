@@ -9,7 +9,7 @@ nodejs to run a simple http server:
 1. Download and install npm
 2. run `npm install -g http-server`
 3. In the game directory, run `http-server -p 8888`
-4. Navigate to `localhost:8888` in your browser
+4. Navigate to `localhost:8888/index.html` in your browser
 
 This works on any machine.
 
