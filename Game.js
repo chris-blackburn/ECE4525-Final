@@ -129,8 +129,8 @@ class Game {
         textSize(12);
         text("Use WASD to move and SPACE to jump.\n\n\n" +
             "Aim your cannon with the mouse and click to shoot.\n\n\n" +
-            "Your bullets will ricochet off walls and enemies. " +
-            "Use their power to give yourself a boost!",
+            "Your bullets will bounce off walls and enemies. " +
+            "Use the ricochet to give yourself a boost!",
             200, 100, 300, 300);
     }
 
