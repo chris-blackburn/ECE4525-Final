@@ -1,10 +1,18 @@
 'use strict';
 
 let utils = {
-    half: function(n) {
-        return n >> 1;
-    }
+  half: function(n) {
+      return n >> 1;
+  }
 };
+
+/* Returns true if the mouse is within a certain boxed region. x, y is center */
+let mouseWithin = function(x, y, w, h) {
+  return mouseX >= x - w / 2 &&
+         mouseX <= x + w / 2 &&
+         mouseY >= y - h / 2 &&
+         mouseY <= y + h / 2;
+}
 
 /**
  * Found on https://github.com/processing/p5.js/issues/1845

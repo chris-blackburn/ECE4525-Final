@@ -3,7 +3,8 @@
 class Game {
     constructor() {
         this.gameStates = {
-            MENU: 1
+            MENU: 1,
+            INSTR: 2
         };
 
         this.currentGameState = this.gameStates.MENU;
@@ -55,14 +56,14 @@ class Game {
                     });
                 },
 
-                cannonSmoke: new ParticleSystem(145, 320, 1, 100)
+                cannonSmoke: new ParticleSystem(145, 320, 1, 90)
             }
         }
     }
 
     /* **************** BEGIN DRAW FUNCTIONS **************** */
     /* Draw the main menu */
-    drawMenu() {
+    drawMenu(noText = false) {
         push();
         background(255, 127, 80)
         this.stateValues.menu.drawFog();
@@ -87,9 +88,50 @@ class Game {
 
         assets.drawImage("bugboi_menu", 330, 330);
 
-        /* Draw the menu text and options text */
-        
+        /* Make text more readable by putting a transparent square over the
+         * canvas. */
+        fill(0, 0, 0, 120);
+        rect(200, 200, width, height);
+
+        if (!noText) {
+            textAlign(CENTER, CENTER);
+            /* Title of the game */
+            fill(255, 50, 20);
+            textFont(assets.getFont("options_font"));
+            textSize(30);
+            text("Cannon Boi", 200, 150);
+
+            /* Draw the menu text and options text */
+            fill(255, 255, 255);
+            textSize(15);
+            text("Start Game", 200, 250, 170, 20);
+            text("Instructions", 200, 300, 180, 20);
+
+            textSize(8);
+            text("Chris Blackburn", 200, 390);
+        }
+
         pop();
+    }
+
+    drawInstr() {
+        this.drawMenu(true);
+        textAlign(CENTER, CENTER);
+        textFont(assets.getFont("options_font"));
+
+        fill(255, 255, 255);
+        textSize(15);
+        text("How to Play", 200, 20);
+
+        textSize(10);
+        text("Click to return", 200, 385);
+
+        textSize(12);
+        text("Use WASD to move and SPACE to jump.\n\n\n" +
+            "Aim your cannon with the mouse and click to shoot.\n\n\n" +
+            "Your bullets will ricochet off walls and enemies. " +
+            "Use their power to give yourself a boost!",
+            200, 100, 300, 300);
     }
 
     /* To be called every frame. Redirects to the appropriate draw function
@@ -100,6 +142,9 @@ class Game {
         case this.gameStates.MENU:
             this.drawMenu();
             break;
+        case this.gameStates.INSTR:
+            this.drawInstr();
+            break;
         }
     }
     /* **************** END DRAW FUNCTIONS **************** */
@@ -107,7 +152,19 @@ class Game {
     /* **************** BEGIN UPDATE FUNCTIONS **************** */
     /* update the game's main menu (wait for events, animations) */
     updateMenu() {
-        return;
+        if (mouseGotClicked) {
+            if (mouseWithin(200, 250, 170, 40)) {
+                console.log("Start Game");
+            } else if (mouseWithin(200, 300, 190, 40)) {
+                this.currentGameState = this.gameStates.INSTR;
+            }
+        }
+    }
+
+    updateInstr() {
+        if (mouseGotClicked) {
+            this.currentGameState = this.gameStates.MENU;
+        }
     }
 
     /* To be called every frame. Redirects to the appropriate update function
@@ -116,6 +173,9 @@ class Game {
         switch(this.currentGameState) {
         case this.gameStates.MENU:
             this.updateMenu();
+            break;
+        case this.gameStates.INSTR:
+            this.updateInstr();
             break;
         }
     }

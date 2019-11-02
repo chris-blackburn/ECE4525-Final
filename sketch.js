@@ -2,6 +2,7 @@
 
 let game;
 let assets;
+let mouseGotClicked = false;
 
 function preload() {
   assets = new Assets();
@@ -9,6 +10,8 @@ function preload() {
   assets.addImage(loadImage('assets/cannon.png'), "cannon");
   assets.addImage(loadImage('assets/hardbug.png'), "bugboi");
   assets.addImage(loadImage('assets/background.png'), "background");
+
+  assets.addFont(loadFont('assets/A_Goblin_Appears.otf'), "options_font");
 }
 
 function setup() {
@@ -17,6 +20,7 @@ function setup() {
   angleMode(DEGREES);
   rectMode(CENTER);
   imageMode(CENTER);
+  textAlign(CENTER, CENTER);
 
   /* Enlarged images for the main menu screen. */
   assets.copyImage("myguy", "myguy_menu").resizeNN(128, 128);
@@ -29,4 +33,13 @@ function setup() {
 function draw() {
   game.update();
   game.draw();
+
+  /* Reset the event's for the next frame */
+  mouseGotClicked = false;
+}
+
+function mouseClicked() {
+  mouseGotClicked = true;
+
+  return false;
 }
