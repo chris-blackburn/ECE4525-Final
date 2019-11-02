@@ -99,13 +99,13 @@ class Game {
             fill(255, 50, 20);
             textFont(assets.getFont("options_font"));
             textSize(30);
-            text("Cannon Boi", 200, 150);
+            text("Cannon Boi", 200, 75);
 
             /* Draw the menu text and options text */
             fill(255, 255, 255);
             textSize(15);
-            text("Start Game", 200, 250, 170, 20);
-            text("Instructions", 200, 300, 180, 20);
+            text("Start Game", 200, 200, 170, 20);
+            text("Instructions", 200, 250, 180, 20);
 
             textSize(8);
             text("Chris Blackburn", 200, 390);
@@ -153,9 +153,9 @@ class Game {
     /* update the game's main menu (wait for events, animations) */
     updateMenu() {
         if (mouseGotClicked) {
-            if (mouseWithin(200, 250, 170, 40)) {
+            if (mouseWithin(200, 200, 170, 40)) {
                 console.log("Start Game");
-            } else if (mouseWithin(200, 300, 190, 40)) {
+            } else if (mouseWithin(200, 250, 190, 40)) {
                 this.currentGameState = this.gameStates.INSTR;
             }
         }
