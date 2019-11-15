@@ -4,6 +4,35 @@ let game;
 let assets;
 let mouseGotClicked = false;
 
+let tilesize = 16;
+let levels = [
+  ["wwwwwwwwwwwwwwwwwwwwwwwww",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w                       w",
+  "w   p                   w",
+  "wwwwwwwwwwwwwwwwwwwwwwwww",]
+];
+
 function preload() {
   assets = new Assets();
   assets.addImage(loadImage('assets/myguy.png'), "myguy");
@@ -18,8 +47,8 @@ function setup() {
   createCanvas(400, 400);
   frameRate(60);
   angleMode(DEGREES);
-  rectMode(CENTER);
-  imageMode(CENTER);
+  rectMode(CORNER);
+  imageMode(CORNER);
   textAlign(CENTER, CENTER);
 
   /* Enlarged images for the main menu screen. */

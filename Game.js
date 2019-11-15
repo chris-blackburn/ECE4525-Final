@@ -4,10 +4,18 @@ class Game {
     constructor() {
         this.gameStates = {
             MENU: 1,
-            INSTR: 2
+            INSTR: 2,
+            MAIN: 3
         };
 
         this.currentGameState = this.gameStates.MENU;
+
+        /* Create tilemap ojects from the levels */
+        this.tilemaps = [];
+        this.currentLevel = 0;
+        levels.forEach((level) => {
+            this.tilemaps.push(new Tilemap(level, tilesize));
+        });
 
         /* Some state values need to be kept in different screens. */
         this.stateValues = {
@@ -64,6 +72,8 @@ class Game {
     /* **************** BEGIN DRAW FUNCTIONS **************** */
     /* Draw the main menu */
     drawMenu(noText = false) {
+        rectMode(CENTER);
+        imageMode(CENTER);
         push();
         background(255, 127, 80)
         this.stateValues.menu.drawFog();
@@ -112,6 +122,8 @@ class Game {
         }
 
         pop();
+        rectMode(CORNER);
+        imageMode(CORNER);
     }
 
     drawInstr() {
@@ -131,7 +143,11 @@ class Game {
             "Aim your cannon with the mouse and click to shoot.\n\n\n" +
             "Your bullets will bounce off walls and enemies. " +
             "Use the ricochet to give yourself a boost!",
-            200, 100, 300, 300);
+            50, 10, 300, 300);
+    }
+
+    drawMain() {
+        this.tilemaps[this.currentLevel].draw();
     }
 
     /* To be called every frame. Redirects to the appropriate draw function
@@ -145,6 +161,9 @@ class Game {
         case this.gameStates.INSTR:
             this.drawInstr();
             break;
+        case this.gameStates.MAIN:
+            this.drawMain();
+            break;
         }
     }
     /* **************** END DRAW FUNCTIONS **************** */
@@ -154,7 +173,7 @@ class Game {
     updateMenu() {
         if (mouseGotClicked) {
             if (mouseWithin(200, 200, 170, 40)) {
-                console.log("Start Game");
+                this.currentGameState = this.gameStates.MAIN;
             } else if (mouseWithin(200, 250, 190, 40)) {
                 this.currentGameState = this.gameStates.INSTR;
             }
@@ -162,6 +181,12 @@ class Game {
     }
 
     updateInstr() {
+        if (mouseGotClicked) {
+            this.currentGameState = this.gameStates.MENU;
+        }
+    }
+
+    updateMain() {
         if (mouseGotClicked) {
             this.currentGameState = this.gameStates.MENU;
         }
@@ -176,6 +201,9 @@ class Game {
             break;
         case this.gameStates.INSTR:
             this.updateInstr();
+            break;
+        case this.gameStates.MAIN:
+            this.updateMain();
             break;
         }
     }
