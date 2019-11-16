@@ -26,6 +26,17 @@ class Player extends Entity {
             if (this.velocity.x <= this.walkingForce) {
                 this.applyForce(this.forwardWalkingForce);
             }
+        } else {
+            /* Decay horizontal velocity */
+            if (abs(this.velocity.x) < 0.1) {
+                this.velocity.x = 0;
+            } else {
+                if (this.jumping) {
+                    this.applyForce(createVector(this.velocity.x * -0.1, 0));
+                } else {
+                    this.applyForce(createVector(this.velocity.x * -0.5, 0));
+                }
+            }
         }
 
         /* Jumping */
@@ -35,14 +46,13 @@ class Player extends Entity {
             this.jumping = true;
         }
 
-        /* Decay horizontal velocity if on the ground */
-        if (abs(this.velocity.x) < 0.1) {
-            this.velocity.x = 0;
-        } else {
-            this.applyForce(createVector(this.velocity.x * -0.5, 0));
+        /* Shooting */
+        if (mouseGotClicked && !this.myCannonball.fired) {
+            this.myCannonball.shoot(this.getCenter());
         }
 
         super.update(game);
+        this.myCannonball.update(game);
     }
 
     draw() {
@@ -55,5 +65,7 @@ class Player extends Entity {
         let center = this.getCenter();
         utils.dottedLine(center.x, center.y, mouseX, mouseY);
         strokeWeight(1);
+
+        this.myCannonball.draw();
     }
 }

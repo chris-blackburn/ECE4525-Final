@@ -10,11 +10,27 @@ class Cannonball extends Entity {
         /* The cannonball will richochet a limited number of times */
         this.totalBounces = 2;
         this.bouncesLeft = this.totalBounces;
+
+        /* Shoot for magnitude */
+        this.shootForceMag = 8;
     }
 
-    update() {
+    /* Shoot the cannonball starting from... from */
+    shoot(from) {
+        let mouse = createVector(mouseX, mouseY);
+        this.position.set(from.x - this.w, from.y - this.h);
+        this.velocity.mult(0);
+
+        let shootForce = p5.Vector.sub(mouse, this.position);
+        shootForce.setMag(this.shootForceMag);
+
+        this.applyForce(shootForce);
+        this.fired = true;
+    }
+
+    update(game) {
         if (this.fired) {
-            super.update();
+            super.update(game);
         }
     }
 

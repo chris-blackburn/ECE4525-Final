@@ -48,27 +48,51 @@ class Entity {
                 /* I was above */
                 if (this.oldPosition.y + cb.h <= othercb.y) {
                     this.position.y = othercb.y - cb.h;
-                    this.velocity.y = 0;
+                    /* TODO: Move to cannonball */
+                    if (this instanceof Cannonball) {
+                        this.velocity.y *= -1;
+                    } else {
+                        this.velocity.y = 0;
+                    }
 
                     /* TODO: make more sophisticated collision to move this to
                      * player class */
-                    this.jumping = false;
+                    if (this instanceof Player) {
+                        this.jumping = false;
+                    }
 
                 /* I was below */
                 } else if (this.oldPosition.y >= othercb.y + othercb.h) {
                     this.position.y = othercb.y + othercb.h;
-                    this.velocity.y = 0;
+                    /* TODO: Move to cannonball */
+                    if (this instanceof Cannonball) {
+                        this.velocity.y *= -1;
+                    } else {
+                        this.velocity.y = 0;
+                    }
 
                 /* I was to the left */
                 } else if (this.oldPosition.x + cb.w <= othercb.x) {
                     this.position.x = othercb.x - cb.w;
-                    this.velocity.x = 0;
+                    /* TODO: Move to cannonball */
+                    if (this instanceof Cannonball) {
+                        this.velocity.x *= -1;
+                    } else {
+                        this.velocity.x = 0;
+                    }
 
                 /* I was to the right */
                 } else if (this.oldPosition.x >= othercb.x + othercb.w) {
                     this.position.x = othercb.x + othercb.w;
-                    this.velocity.x = 0;
+                    /* TODO: Move to cannonball */
+                    if (this instanceof Cannonball) {
+                        this.velocity.x *= -1;
+                    } else {
+                        this.velocity.x = 0;
+                    }
                 }
+
+                return collision;
             }
         }
 
@@ -86,12 +110,21 @@ class Entity {
         this.velocity.add(this.acceleration);
 
         if (game) {
+            let collided = false;
             /* To allow wall sliding, we need to update and check x/y separately */
             this.position.x += this.velocity.x;
-            this.fixWallCollisions(game.tilemaps[game.currentLevel].logicalMap);
+            collided |= this.fixWallCollisions(game.tilemaps[game.currentLevel].logicalMap);
 
             this.position.y += this.velocity.y;
-            this.fixWallCollisions(game.tilemaps[game.currentLevel].logicalMap);
+            collided |= this.fixWallCollisions(game.tilemaps[game.currentLevel].logicalMap);
+
+            /* TODO: make specific to cannonball */
+            if (this instanceof Cannonball && collided) {
+                if (--this.bouncesLeft < 0) {
+                    this.fired = false;
+                    this.bouncesLeft = this.totalBounces;
+                }
+            }
         } else {
             this.position.add(this.velocity);
         }
