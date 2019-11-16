@@ -121,8 +121,7 @@ class Entity {
             /* TODO: make specific to cannonball */
             if (this instanceof Cannonball && collided) {
                 if (--this.bouncesLeft < 0) {
-                    this.fired = false;
-                    this.bouncesLeft = this.totalBounces;
+                    this.reset();
                 }
             }
         } else {
