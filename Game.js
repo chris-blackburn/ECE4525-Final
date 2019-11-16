@@ -8,7 +8,7 @@ class Game {
             MAIN: 3
         };
 
-        this.currentGameState = this.gameStates.MAIN;
+        this.currentGameState = this.gameStates.MENU;
 
         /* Create tilemap ojects from the levels */
         this.tilemaps = [];

@@ -96,3 +96,62 @@ there will be a wall they have to get over. I'll leave a little pixel art sign
 showing them that they need to bounce a cannon ball off the ground to hit
 themselves in the air and over the wall. In other words, I let the level
 progression do the teaching.
+
+## Checkpoint 2
+As I talked to Dr. Hsiao in class about, I'm deferring a lot of my artwork and
+animations since I want to do nice pixel art. I am not adept at creating it, so
+it takes me a very long time to do - I'm going to spend some time over break
+to make some nice pixel art with animations. At that time, I will update the
+start screen and main game to include those animations (it's difficult to
+animate since I have to draw a new picture for every frame that the art will
+cycle through). To reiterate, I went in this direction because this assignment
+is largely graded on artwork. For me and my game, this checkpoint would have
+basically been a finished game (If I have one level, I pretty much have them
+all). It was just an impractical amount of work for a checkpoint for my style of
+game.
+
+That being said, I focused on the logic of my game and did a lot
+of tuning for this checkpoint. A large portion of the game is complete. All
+that's left is the following:
+
+1. Pixel art
+2. Create more levels (this game is tile based, so will not be difficult to do)
+3. Enemies with different characteristics
+
+In terms of enemies, it may seem like a full feature to add, but I've followed a
+nice object oriented design. All that I would need to do to add an enemy is to
+extend my Entity class and add a few unique characteristics (as well as the
+art). The same is true with any hazards I would add in the levels. Not much more
+work is necessary to expand in this direction.
+
+This game is a multi-level platformer where I want players to be able to
+experiment with gameplay and to try new things. By providing tight controls and
+an interesting mechanic, I've done just that. This is exactly the game I'd want
+to play. I showed this off with the level I provided - there is no _one_ way to
+navigate the level. You can simply jump around, or you can use the cannonball
+ricochet to catapult yourself to a different area.
+
+Your character, can move left and right and can also jump. Any walls (currently
+the darker colored blocks), you cannot move through. I have a dotted line
+showing you where your mouse is aiming. When you click, you will fire off a
+"cannon ball" in that direction. It will bounce 2 times before dissappearing.
+
+If you use the ricochet to hit yourself, you will adopt the velocity of the
+cannon ball. There are a few neat tricks you can do with this mechanic like
+using it to get more air off a jump, or using it to move faster across the
+ground. With this, it's possible to introduce a wide range of levels.
+
+In terms of visuals, right now, I'm just drawing the collision boxes for the
+main character and the cannon ball. The line coming out of that is the direction
+of velocity for that entity.
+
+A few things I will add in terms of art:
+
+1. Characters with animation
+2. Main character's cannon with shooting animation
+3. Explosion effects for the cannonball (bouncing and dissappearing)
+4. Tile art (changes depening on surrounding tiles e.g. corners and flat
+areas will be different and are automatically generated)
+
+Just to be clear: animations will consist of cycling through severl frames in a
+sprite sheet that I will create.
