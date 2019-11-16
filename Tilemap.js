@@ -41,7 +41,7 @@ class Tilemap {
 
                 /* Player character */
                 case 'p':
-                    //this.player = new Player(actual.x, actual.y, this.tilesize);
+                    this.player = new Player(actual.x, actual.y, this.tilesize);
                     break;
                 }
             }

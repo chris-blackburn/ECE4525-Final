@@ -8,7 +8,7 @@ class Game {
             MAIN: 3
         };
 
-        this.currentGameState = this.gameStates.MENU;
+        this.currentGameState = this.gameStates.MAIN;
 
         /* Create tilemap ojects from the levels */
         this.tilemaps = [];
@@ -147,7 +147,9 @@ class Game {
     }
 
     drawMain() {
+        let player = this.tilemaps[this.currentLevel].player;
         this.tilemaps[this.currentLevel].draw();
+        player.draw();
     }
 
     /* To be called every frame. Redirects to the appropriate draw function
@@ -172,9 +174,9 @@ class Game {
     /* update the game's main menu (wait for events, animations) */
     updateMenu() {
         if (mouseGotClicked) {
-            if (mouseWithin(200, 200, 170, 40)) {
+            if (utils.mouseWithin(200, 200, 170, 40)) {
                 this.currentGameState = this.gameStates.MAIN;
-            } else if (mouseWithin(200, 250, 190, 40)) {
+            } else if (utils.mouseWithin(200, 250, 190, 40)) {
                 this.currentGameState = this.gameStates.INSTR;
             }
         }
@@ -187,9 +189,13 @@ class Game {
     }
 
     updateMain() {
-        if (mouseGotClicked) {
-            this.currentGameState = this.gameStates.MENU;
-        }
+        let currentTilemap = this.tilemaps[this.currentLevel];
+        let player = currentTilemap.player;
+
+        player.applyForce(gravity);
+        player.update();
+
+        player.fixCollisions(currentTilemap.logicalMap);
     }
 
     /* To be called every frame. Redirects to the appropriate update function

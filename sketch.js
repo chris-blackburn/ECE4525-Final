@@ -4,6 +4,8 @@ let game;
 let assets;
 let mouseGotClicked = false;
 
+/* Globals for game world */
+let gravity;
 let tilesize = 16;
 let levels = [
   ["wwwwwwwwwwwwwwwwwwwwwwwww",
@@ -17,21 +19,30 @@ let levels = [
   "w                       w",
   "w                       w",
   "w                       w",
+  "w                   w   w",
+  "w   w               w   w",
+  "w   w          wwwwww   w",
+  "w   wwwwww              w",
   "w                       w",
   "w                       w",
   "w                       w",
+  "w           wwwwww      w",
   "w                       w",
   "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w   p                   w",
+  "w              wwwwwww  w",
+  "w                 w     w",
+  "w   p             w     w",
   "wwwwwwwwwwwwwwwwwwwwwwwww",]
 ];
+
+var keys = [];
+function keyPressed() {
+    keys[keyCode] = 1;
+};
+
+function keyReleased() {
+    keys[keyCode] = 0;
+};
 
 function preload() {
   assets = new Assets();
@@ -56,6 +67,7 @@ function setup() {
   assets.copyImage("cannon", "cannon_menu").resizeNN(144, 144);
   assets.copyImage("bugboi", "bugboi_menu").resizeNN(128, 128);
 
+  gravity = createVector(0, 0.1);
   game = new Game();
 }
 

@@ -3,23 +3,45 @@
 let utils = {
   half: function(n) {
       return n >> 1;
+  },
+
+  /* Returns true if the mouse is within a certain boxed region. x, y is center */
+  mouseWithin: function(x, y, w, h) {
+    return mouseX >= x - w / 2 &&
+           mouseX <= x + w / 2 &&
+           mouseY >= y - h / 2 &&
+           mouseY <= y + h / 2;
+  },
+
+  /* Helper function that checks collision between two rectangles.
+   * This assumes the rectangles given have parameters x, y, w, h,
+   * and that the x, y coordinates represent the center of the rect. */
+  checkBoxCollision: function(r1, r2) {
+    if (r1.x < r2.x + r2.w &&
+        r1.x + r1.w > r2.x &&
+        r1.y < r2.y + r2.h &&
+        r1.y + r1.h > r2.y) {
+        return true;
+    }
+
+    return false;
+  },
+
+  dottedLine: function(x1, y1, x2, y2) {
+    for (let i = 0; i <= 10; i++) {
+      let x = lerp(x1, x2, i / 10.0);
+      let y = lerp(y1, y2, i / 10.0);
+      point(x, y);
+    }
   }
 };
-
-/* Returns true if the mouse is within a certain boxed region. x, y is center */
-let mouseWithin = function(x, y, w, h) {
-  return mouseX >= x - w / 2 &&
-         mouseX <= x + w / 2 &&
-         mouseY >= y - h / 2 &&
-         mouseY <= y + h / 2;
-}
 
 /**
  * Found on https://github.com/processing/p5.js/issues/1845
  * Credit to gncgnc
  * 
  * I made some pixel art, and I wanted to be able to scale it here with
- * nearest neihbors (so it doesn't make it fuzzy).
+ * nearest neighbors (so it doesn't make it fuzzy).
  * 
  * Resize the image to a new width and height using nearest neigbor algorithm. To make the image scale
  * proportionally, use 0 as the value for the wide or high parameter.

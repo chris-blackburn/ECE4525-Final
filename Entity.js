@@ -23,18 +23,69 @@ class Entity {
         this.acceleration = createVector(0, 0);
     }
 
+    /* Get the effective collision box of this entity */
+    getCollisionBox() {
+        return {
+            x: this.position.x,
+            y: this.position.y,
+            w: this.w,
+            h: this.h
+        }
+    }
+
+    /* Fix collision between this object and another */
+    fixCollisions(objs) {
+        var cb = this.getCollisionBox();
+        var collision = false;
+
+        for (var i = 0; i < objs.length; i++) {
+            var othercb = objs[i].getCollisionBox();
+
+            if (utils.checkBoxCollision(cb, othercb)) {
+                collision = true;
+
+                /* I was above */
+                if (this.oldPosition.y + cb.h <= othercb.y) {
+                    this.position.y = othercb.y - cb.h;
+                    this.velocity.y = 0;
+
+                /* I was below */
+                } else if (this.oldPosition.y >= othercb.y + othercb.h) {
+                    this.position.y = othercb.y + othercb.h;
+                    this.velocity.y = 0;
+
+                /* I was to the left */
+                } else if (this.oldPosition.x + cb.w <= othercb.x) {
+                    this.position.x = othercb.x - cb.w;
+                    this.velocity.x = 0;
+
+                /* I was to the right */
+                } else if (this.oldPosition.x >= othercb.x + othercb.w) {
+                    this.position.x = othercb.x + othercb.w;
+                    this.velocity.x = 0;
+                }
+            }
+        }
+
+        return collision;
+    }
+
     /* Returns the center x, y of this entity */
     getCenter() {
         return createVector(this.position.x + this.w / 2, this.position.y + this.h / 2);
     }
 
     update() {
+        this.oldPosition = this.position.copy();
+
         this.velocity.add(this.acceleration);
         this.position.add(this.velocity);
-
         this.acceleration.mult(0);
 
-        this.oldPosition = this.position.copy();
+        /* Only change angle if velocity is non-zero */
+        if (this.velocity.mag() !== 0) {
+            this.angle = this.velocity.heading();
+        }
     }
 
     applyForce(force) {
@@ -46,10 +97,13 @@ class Entity {
 
         /* Draw a bounding rectangle and a line from the center rotated at the
          * current angle. */
+        fill(255, 0, 0);
+        stroke(0, 0, 0);
         rect(this.position.x, this.position.y, this.w, this.h);
         push();
+        translate(center.x, center.y);
         rotate(this.angle);
-        line(center.x, center.y, max(this.w, this.h), center.y);
+        line(0, 0, max(this.w, this.h), 0);
         pop();
     }
 }
