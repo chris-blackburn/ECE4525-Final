@@ -193,9 +193,7 @@ class Game {
         let player = currentTilemap.player;
 
         player.applyForce(gravity);
-        player.update();
-
-        player.fixCollisions(currentTilemap.logicalMap);
+        player.update(this);
     }
 
     /* To be called every frame. Redirects to the appropriate update function

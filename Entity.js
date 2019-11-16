@@ -33,13 +33,14 @@ class Entity {
         }
     }
 
-    /* Fix collision between this object and another */
-    fixCollisions(objs) {
-        var cb = this.getCollisionBox();
-        var collision = false;
+    /* Fix collision between this object and another 
+     * TODO: add special collision check for tiles in tilemap class */
+    fixWallCollisions(objs) {
+        let cb = this.getCollisionBox();
+        let collision = false;
 
-        for (var i = 0; i < objs.length; i++) {
-            var othercb = objs[i].getCollisionBox();
+        for (let i = 0; i < objs.length; i++) {
+            let othercb = objs[i].getCollisionBox();
 
             if (utils.checkBoxCollision(cb, othercb)) {
                 collision = true;
@@ -79,11 +80,22 @@ class Entity {
         return createVector(this.position.x + this.w / 2, this.position.y + this.h / 2);
     }
 
-    update() {
+    /* update the entity - pass in a backreference to the game */
+    update(game) {
         this.oldPosition = this.position.copy();
-
         this.velocity.add(this.acceleration);
-        this.position.add(this.velocity);
+
+        if (game) {
+            /* To allow wall sliding, we need to update and check x/y separately */
+            this.position.x += this.velocity.x;
+            this.fixWallCollisions(game.tilemaps[game.currentLevel].logicalMap);
+
+            this.position.y += this.velocity.y;
+            this.fixWallCollisions(game.tilemaps[game.currentLevel].logicalMap);
+        } else {
+            this.position.add(this.velocity);
+        }
+        
         this.acceleration.mult(0);
 
         /* Only change angle if velocity is non-zero */

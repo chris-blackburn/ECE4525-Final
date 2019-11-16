@@ -10,9 +10,12 @@ class Player extends Entity {
 
         this.jumping = false;
         this.jumpForce = createVector(0, -4);
+
+        /* Only one cannon ball at a time */
+        this.myCannonball = new Cannonball(this.x, this.y);
     }
 
-    update() {
+    update(game) {
         /* Left/right movement. Limit how much velocity can be added by the
          * user. */
         if (keys[65] && !keys[68]) {
@@ -39,7 +42,7 @@ class Player extends Entity {
             this.applyForce(createVector(this.velocity.x * -0.5, 0));
         }
 
-        super.update();
+        super.update(game);
     }
 
     draw() {
