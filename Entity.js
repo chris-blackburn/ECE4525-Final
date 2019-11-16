@@ -49,6 +49,10 @@ class Entity {
                     this.position.y = othercb.y - cb.h;
                     this.velocity.y = 0;
 
+                    /* TODO: make more sophisticated collision to move this to
+                     * player class */
+                    this.jumping = false;
+
                 /* I was below */
                 } else if (this.oldPosition.y >= othercb.y + othercb.h) {
                     this.position.y = othercb.y + othercb.h;

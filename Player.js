@@ -4,9 +4,12 @@ class Player extends Entity {
     constructor(x, y, s) {
         super(x, y, s);
 
-        this.walkingForce = 1;
+        this.walkingForce = 1.5;
         this.forwardWalkingForce = createVector(this.walkingForce, 0);
         this.reverseWalkingForce = createVector(-this.walkingForce, 0);
+
+        this.jumping = false;
+        this.jumpForce = createVector(0, -4);
     }
 
     update() {
@@ -21,7 +24,14 @@ class Player extends Entity {
                 this.applyForce(this.forwardWalkingForce);
             }
         }
-        
+
+        /* Jumping */
+        if (keys[32] && !this.jumping) {
+            this.velocity.y = 0;
+            this.applyForce(this.jumpForce);
+            this.jumping = true;
+        }
+
         /* Decay horizontal velocity if on the ground */
         if (abs(this.velocity.x) < 0.1) {
             this.velocity.x = 0;
