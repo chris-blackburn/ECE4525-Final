@@ -8,7 +8,7 @@ class Game {
             MAIN: 3
         };
 
-        this.currentGameState = this.gameStates.MENU;
+        this.currentGameState = this.gameStates.MAIN;
 
         /* Create tilemap ojects from the levels */
         this.tilemaps = [];
@@ -147,9 +147,7 @@ class Game {
     }
 
     drawMain() {
-        let player = this.tilemaps[this.currentLevel].player;
         this.tilemaps[this.currentLevel].draw();
-        player.draw();
     }
 
     /* To be called every frame. Redirects to the appropriate draw function
@@ -194,6 +192,11 @@ class Game {
 
         player.applyForce(gravity);
         player.update(this);
+
+        /* Set the camera position to track the player */
+        let playerCenter = player.getCenter();
+        currentTilemap.camera.setPos(playerCenter.x - (width / 2),
+            playerCenter.y - (height / 2));
     }
 
     /* To be called every frame. Redirects to the appropriate update function

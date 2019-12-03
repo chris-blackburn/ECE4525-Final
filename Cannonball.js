@@ -21,8 +21,8 @@ class Cannonball extends Entity {
     }
 
     /* Shoot the cannonball starting from... from */
-    shoot(from) {
-        let mouse = createVector(mouseX, mouseY);
+    shoot(from, to) {
+        let mouse = createVector(to.x, to.y);
         this.position.set(from.x - this.w, from.y - this.h);
         this.velocity.mult(0);
 

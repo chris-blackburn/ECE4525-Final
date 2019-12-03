@@ -44,7 +44,7 @@ class Player extends Entity {
                 let xVelocity = createVector(this.velocity.x, 0);
                 let decayVector = createVector(this.velocity.x, 0);
                 if (this.jumping) {
-                    decayVector.setMag(-0.1);
+                    decayVector.setMag(-0.2);
                 } else {
                     decayVector.setMag((this.cannonHit) ? -0.1 : -0.4);
                 }
@@ -63,8 +63,10 @@ class Player extends Entity {
         }
 
         /* Shooting */
+        let camera = game.tilemaps[game.currentLevel].camera;
         if (mouseGotClicked && !this.myCannonball.fired) {
-            this.myCannonball.shoot(this.getCenter());
+            this.myCannonball.shoot(this.getCenter(),
+                createVector(mouseX + camera.x, mouseY + camera.y));
         } else if (this.myCannonball.fired && this.myCannonball.hasBounced()) {
             /* If the cannon ball is out and about, check if we collided with
              * it. */
@@ -92,7 +94,7 @@ class Player extends Entity {
         this.myCannonball.update(game);
     }
 
-    draw() {
+    draw(camera) {
         super.draw();
 
         /* Dotted line from player to mouse */
@@ -100,7 +102,8 @@ class Player extends Entity {
         strokeWeight(4);
 
         let center = this.getCenter();
-        utils.dottedLine(center.x, center.y, mouseX, mouseY);
+        utils.dottedLine(center.x, center.y,
+            mouseX + camera.x, mouseY + camera.y);
         strokeWeight(1);
 
         this.myCannonball.draw();

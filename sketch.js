@@ -6,34 +6,6 @@ let mouseGotClicked = false;
 
 /* Globals for game world */
 let gravity;
-let tilesize = 16;
-let levels = [
-  ["wwwwwwwwwwwwwwwwwwwwwwwww",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w                   w   w",
-  "w   w               w   w",
-  "w   w          wwwwww   w",
-  "w   wwwwww              w",
-  "w                       w",
-  "w                       w",
-  "w                       w",
-  "w           wwwwww      w",
-  "w                       w",
-  "w                       w",
-  "w              wwwwwww  w",
-  "w                 w     w",
-  "w   p             w     w",
-  "wwwwwwwwwwwwwwwwwwwwwwwww",]
-];
 
 var keys = [];
 function keyPressed() {
@@ -55,7 +27,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(1000, 400);
   frameRate(60);
   angleMode(DEGREES);
   rectMode(CORNER);
