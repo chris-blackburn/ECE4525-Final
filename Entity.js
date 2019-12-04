@@ -59,6 +59,7 @@ class Entity {
                      * player class */
                     if (this instanceof Player) {
                         this.jumping = false;
+                        this.cannonHit = false;
                     }
 
                 /* I was below */
@@ -126,7 +127,7 @@ class Entity {
             }
 
             if (this instanceof Player && this.velocity.y <= 0) {
-                this.velocity.limit(7);
+                this.velocity.limit(8);
             }
         } else {
             this.position.add(this.velocity);

@@ -21,6 +21,7 @@ function preload() {
   assets.addImage(loadImage('assets/myguy.png'), "myguy");
   assets.addImage(loadImage('assets/cannon.png'), "cannon");
   assets.addImage(loadImage('assets/hardbug.png'), "bugboi");
+  assets.addImage(loadImage('assets/main.png'), "main");
 
   /* Credit to Segel Artwork for background image */
   assets.addImage(loadImage('assets/background.png'), "background");

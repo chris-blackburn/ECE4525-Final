@@ -19,7 +19,7 @@ class Camera {
 
     /* Set the camera position. Do not go outside the tilemap */
     setPos(x, y) {
-        this.x = constrain(x, 0, this.maxX);
-        this.y = constrain(y, 0, this.maxY);
+        this.x = floor(constrain(x, 0, this.maxX));
+        this.y = floor(constrain(y, 0, this.maxY));
     }
 }

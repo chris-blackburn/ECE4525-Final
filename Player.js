@@ -21,20 +21,12 @@ class Player extends Entity {
          * user. If we just hit a cannonball, then walking force acts more like
          * a decay. */
         if (keys[65] && !keys[68]) {
-            if (!this.cannonHit && this.velocity.x >= -this.walkingForce) {
+            if (this.velocity.x >= -this.walkingForce) {
                 this.applyForce(this.reverseWalkingForce);
-            } else if (this.cannonHit) {
-                let decayWalkingForce = this.reverseWalkingForce.copy();
-                decayWalkingForce.setMag(0.3);
-                this.applyForce(decayWalkingForce);
             }
         } else if (keys[68] && !keys[65]) {
-            if (!this.cannonHit && this.velocity.x <= this.walkingForce) {
+            if (this.velocity.x <= this.walkingForce) {
                 this.applyForce(this.forwardWalkingForce);
-            } else if (this.cannonHit) {
-                let decayWalkingForce = this.forwardWalkingForce.copy();
-                decayWalkingForce.setMag(0.3);
-                this.applyForce(decayWalkingForce);
             }
         } else if (!keys[65] && !keys[68]) {
             /* Decay horizontal velocity */
@@ -76,6 +68,7 @@ class Player extends Entity {
             /* If the cannonball hit us, then we need to reset it and apply its
              * velocity to us */
             if (collided) {
+                this.velocity.y = 0;
                 let ricochetForce = this.myCannonball.velocity;
                 ricochetForce.setMag(5);
                 this.applyForce(ricochetForce);
@@ -97,7 +90,10 @@ class Player extends Entity {
     }
 
     draw(camera) {
-        super.draw();
+        let sx = 0;
+        let sy = 0;
+        let dx = this.position.x;
+        let dy = this.position.y;
 
         /* Dotted line from player to mouse */
         stroke(200, 200, 200);
@@ -107,6 +103,22 @@ class Player extends Entity {
         utils.dottedLine(center.x, center.y,
             mouseX + camera.x, mouseY + camera.y);
         strokeWeight(1);
+
+        push();
+        if (this.jumping || this.cannonHit) {
+            sx = 1 * tilesize;
+        } else if (!this.jumping && !this.cannonHit) {
+            /* animation */
+        }
+
+        /* flip the image to correct direction */
+        if ((keys[65] && !keys[68]) || this.velocity.x < 0 || cos(this.angle) < 0) {
+            scale(-1, 1);
+            dx = (dx * -1) - tilesize;
+        }
+
+        image(assets.getImage("main"), floor(dx), dy, tilesize, tilesize, sx, sy, tilesize, tilesize);
+        pop();
 
         this.myCannonball.draw();
     }

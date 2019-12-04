@@ -108,10 +108,6 @@ class Tilemap {
             sum += 2;
         }
 
-        if (row === 0 && col === this.cols - 1) {
-            console.log(sum);
-        }
-
         return sum;
     }
 
