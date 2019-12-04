@@ -12,7 +12,7 @@ class Cannonball extends Entity {
         this.bouncesLeft = this.totalBounces;
 
         /* Shoot for magnitude */
-        this.shootForceMag = 8;
+        this.shootForceMag = 10;
     }
 
     reset() {
@@ -20,9 +20,13 @@ class Cannonball extends Entity {
         this.bouncesLeft = this.totalBounces;
     }
 
-    /* Shoot the cannonball starting from... from */
+    /* Shoot the cannonball */
     shoot(from, to) {
+        let bulletOffset = createVector(this.w / 2, this.h / 2);
         let mouse = createVector(to.x, to.y);
+        from.add(bulletOffset);
+        mouse.sub(bulletOffset);
+        
         this.position.set(from.x - this.w, from.y - this.h);
         this.velocity.mult(0);
 

@@ -4,12 +4,12 @@ class Player extends Entity {
     constructor(x, y, s) {
         super(x, y, s);
 
-        this.walkingForce = 1.5;
+        this.walkingForce = 1.8;
         this.forwardWalkingForce = createVector(this.walkingForce, 0);
         this.reverseWalkingForce = createVector(-this.walkingForce, 0);
 
         this.jumping = false;
-        this.jumpForce = createVector(0, -4);
+        this.jumpForce = createVector(0, -5);
 
         /* Only one cannon ball at a time. keep state of being hit */
         this.myCannonball = new Cannonball(this.x, this.y);
@@ -21,19 +21,19 @@ class Player extends Entity {
          * user. If we just hit a cannonball, then walking force acts more like
          * a decay. */
         if (keys[65] && !keys[68]) {
-            if (this.velocity.x >= -this.walkingForce) {
+            if (!this.cannonHit && this.velocity.x >= -this.walkingForce) {
                 this.applyForce(this.reverseWalkingForce);
             } else if (this.cannonHit) {
                 let decayWalkingForce = this.reverseWalkingForce.copy();
-                decayWalkingForce.setMag(0.01);
+                decayWalkingForce.setMag(0.3);
                 this.applyForce(decayWalkingForce);
             }
         } else if (keys[68] && !keys[65]) {
-            if (this.velocity.x <= this.walkingForce) {
+            if (!this.cannonHit && this.velocity.x <= this.walkingForce) {
                 this.applyForce(this.forwardWalkingForce);
             } else if (this.cannonHit) {
                 let decayWalkingForce = this.forwardWalkingForce.copy();
-                decayWalkingForce.setMag(0.01);
+                decayWalkingForce.setMag(0.3);
                 this.applyForce(decayWalkingForce);
             }
         } else if (!keys[65] && !keys[68]) {
@@ -44,9 +44,9 @@ class Player extends Entity {
                 let xVelocity = createVector(this.velocity.x, 0);
                 let decayVector = createVector(this.velocity.x, 0);
                 if (this.jumping) {
-                    decayVector.setMag(-0.2);
+                    decayVector.setMag(-0.4);
                 } else {
-                    decayVector.setMag((this.cannonHit) ? -0.1 : -0.4);
+                    decayVector.setMag((this.cannonHit) ? -0.3 : -0.6);
                 }
 
                 /* Decay shouldn't make the player change direction */
@@ -56,7 +56,7 @@ class Player extends Entity {
         }
 
         /* Jumping */
-        if (keys[32] && !this.jumping) {
+        if (keys[87] && !this.jumping) {
             this.velocity.y = 0;
             this.applyForce(this.jumpForce);
             this.jumping = true;
@@ -64,7 +64,7 @@ class Player extends Entity {
 
         /* Shooting */
         let camera = game.tilemaps[game.currentLevel].camera;
-        if (mouseGotClicked && !this.myCannonball.fired) {
+        if (keys[32] && !this.myCannonball.fired) {
             this.myCannonball.shoot(this.getCenter(),
                 createVector(mouseX + camera.x, mouseY + camera.y));
         } else if (this.myCannonball.fired && this.myCannonball.hasBounced()) {
@@ -81,7 +81,9 @@ class Player extends Entity {
                 this.applyForce(ricochetForce);
                 this.myCannonball.reset();
                 this.cannonHit = true;
-                this.jumping = true;
+
+                /* Allow the player to jump again if the hit the cannon ball */
+                this.jumping = false;
             }
         } else {
             /* reset cannonHit when velocity is low */

@@ -124,6 +124,10 @@ class Entity {
                     this.reset();
                 }
             }
+
+            if (this instanceof Player && this.velocity.y <= 0) {
+                this.velocity.limit(7);
+            }
         } else {
             this.position.add(this.velocity);
         }

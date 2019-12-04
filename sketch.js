@@ -21,6 +21,8 @@ function preload() {
   assets.addImage(loadImage('assets/myguy.png'), "myguy");
   assets.addImage(loadImage('assets/cannon.png'), "cannon");
   assets.addImage(loadImage('assets/hardbug.png'), "bugboi");
+
+  /* Credit to Segel Artwork for background image */
   assets.addImage(loadImage('assets/background.png'), "background");
 
   assets.addFont(loadFont('assets/A_Goblin_Appears.otf'), "options_font");
@@ -29,7 +31,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1000, 400);
+  createCanvas(800, 400);
   frameRate(60);
   angleMode(DEGREES);
   rectMode(CORNER);

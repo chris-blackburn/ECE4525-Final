@@ -166,11 +166,12 @@ class Tilemap {
 
     /* Render the tilemap. Only draw tiles inside the camera */
     draw() {
+        assets.drawImage("background", -this.camera.x, -this.camera.y);
         /* Get the range of rows and columns to draw */
         let gridStart = this.getGridIdx(this.camera.x, this.camera.y);
         let gridEnd = {
-            row: gridStart.row + (height / this.tilesize),
-            col: gridStart.col + (width / this.tilesize)
+            row: min(this.rows - 1, gridStart.row + (height / this.tilesize) + 1),
+            col: min(this.cols - 1, gridStart.col + (width / this.tilesize))
         };
 
         /* only draw tiles the camera can see */
