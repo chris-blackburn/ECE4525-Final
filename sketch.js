@@ -24,6 +24,8 @@ function preload() {
   assets.addImage(loadImage('assets/background.png'), "background");
 
   assets.addFont(loadFont('assets/A_Goblin_Appears.otf'), "options_font");
+
+  assets.addImage(loadImage('assets/grassy_tileset_ordered.png'), "grassy_tileset");
 }
 
 function setup() {
