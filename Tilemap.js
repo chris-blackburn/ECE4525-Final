@@ -60,7 +60,8 @@ class Tilemap {
         return col + (this.cols * row);
     }
 
-    /* http://www.angryfishstudios.com/2011/04/adventures-in-bitmasking/ */
+    /* explanation of what I'm doing for auto-tiling:
+     * http://www.angryfishstudios.com/2011/04/adventures-in-bitmasking/ */
     getTileNumber(row, col) {
         let sum = 0;
         let rm = max(0, row - 1);

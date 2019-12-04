@@ -12,6 +12,7 @@ class Player extends Entity {
         this.jumpForce = createVector(0, -5);
 
         /* Only one cannon ball at a time. keep state of being hit */
+        this.shootCooldown = new Cooldown(200);
         this.myCannonball = new Cannonball(this.x, this.y);
         this.cannonHit = false;
     }
@@ -56,7 +57,8 @@ class Player extends Entity {
 
         /* Shooting */
         let camera = game.tilemaps[game.currentLevel].camera;
-        if (keys[32] && !this.myCannonball.fired) {
+        if (keys[32] && !this.myCannonball.fired && !this.shootCooldown.active) {
+            this.shootCooldown.start();
             this.myCannonball.shoot(this.getCenter(),
                 createVector(mouseX + camera.x, mouseY + camera.y));
         } else if (this.myCannonball.fired && this.myCannonball.hasBounced()) {
@@ -87,6 +89,7 @@ class Player extends Entity {
 
         super.update(game);
         this.myCannonball.update(game);
+        this.shootCooldown.update();
     }
 
     draw(camera) {
@@ -121,5 +124,6 @@ class Player extends Entity {
         pop();
 
         this.myCannonball.draw();
+        this.shootCooldown.draw(width - tilesize * 2, height - tilesize * 2, camera);
     }
 }
