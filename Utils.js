@@ -33,6 +33,26 @@ let utils = {
       let y = lerp(y1, y2, i / 10.0);
       point(x, y);
     }
+  },
+
+  makeRect: function(x, y, w, h) {
+    let r = {
+      x: x,
+      y: y,
+      w: w,
+      h: h
+    }
+
+    /* Replace height with width for 3 args passed */
+    if (arguments.length === 3) {
+      r.w = w;
+      r.h = w;
+    } else if (arguments.length === 2) {
+      r.w = tilesize;
+      r.h = tilesize;
+    }
+
+    return r;
   }
 };
 
