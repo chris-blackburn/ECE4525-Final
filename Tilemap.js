@@ -31,6 +31,8 @@ class Tilemap {
         this.logicalMap = new Array(this.rows * this.cols);
         this.logicalMap.fill(null);
 
+        this.enemies = [];
+
         /* Reference to a player object */
         this.player = undefined;
 
@@ -45,6 +47,10 @@ class Tilemap {
                     let ridx = this.rasterIdx(row, col);
                     this.logicalMap[ridx] = new Entity(actual.x, actual.y, this.tilesize);
                     this.visualMap[ridx] = this.getTileNumber(row, col);
+                    break;
+                
+                case 's':
+                    this.enemies.push(new SimpleEnemy(actual.x, actual.y, this.tilesize));
                     break;
 
                 /* Player character */
@@ -209,6 +215,10 @@ class Tilemap {
 
         push();
         translate(-this.camera.x, -this.camera.y);
+        this.enemies.forEach((enemy) => {
+            enemy.draw(this.camera);
+        });
+
         this.player.draw(this.camera);
         pop();
     }

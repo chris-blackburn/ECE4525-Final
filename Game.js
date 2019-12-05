@@ -193,6 +193,10 @@ class Game {
         player.applyForce(gravity);
         player.update(this);
 
+        currentTilemap.enemies.forEach((enemy) => {
+            enemy.update(this);
+        });
+
         /* Set the camera position to track the player */
         let playerCenter = player.getCenter();
         currentTilemap.camera.setPos(playerCenter.x - (width / 2),

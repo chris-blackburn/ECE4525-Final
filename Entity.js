@@ -123,6 +123,11 @@ class Entity {
             this.position.x += this.velocity.x;
             collided |= this.fixWallCollisionsFast(game.tilemaps[game.currentLevel]);
 
+            /* Simple enemy changes direction when it hits a wall */
+            if (this instanceof SimpleEnemy && collided) {
+                this.dir *= -1;
+            }
+
             this.position.y += this.velocity.y;
             collided |= this.fixWallCollisionsFast(game.tilemaps[game.currentLevel]);
 
