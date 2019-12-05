@@ -33,71 +33,78 @@ class Entity {
         }
     }
 
-    /* Fix collision between this object and another 
-     * TODO: add special collision check for tiles in tilemap class */
+    /* Given 2 collision boxes, resolve a collision */
+    resolveCollision(cb, othercb) {
+        /* I was above */
+        if (this.oldPosition.y + cb.h <= othercb.y) {
+            this.position.y = othercb.y - cb.h;
+            /* TODO: Move to cannonball */
+            if (this instanceof Cannonball) {
+                this.velocity.y *= -1;
+            } else {
+                this.velocity.y = 0;
+            }
+
+            /* TODO: make more sophisticated collision to move this to
+            * player class */
+            if (this instanceof Player) {
+                this.jumping = false;
+                this.cannonHit = false;
+            }
+
+        /* I was below */
+        } else if (this.oldPosition.y >= othercb.y + othercb.h) {
+            this.position.y = othercb.y + othercb.h;
+            /* TODO: Move to cannonball */
+            if (this instanceof Cannonball) {
+                this.velocity.y *= -1;
+            } else {
+                this.velocity.y = 0;
+            }
+
+        /* I was to the left */
+        } else if (this.oldPosition.x + cb.w <= othercb.x) {
+            this.position.x = othercb.x - cb.w;
+            /* TODO: Move to cannonball */
+            if (this instanceof Cannonball) {
+                this.velocity.x *= -1;
+            } else {
+                this.velocity.x = 0;
+            }
+
+        /* I was to the right */
+        } else if (this.oldPosition.x >= othercb.x + othercb.w) {
+            this.position.x = othercb.x + othercb.w;
+            /* TODO: Move to cannonball */
+            if (this instanceof Cannonball) {
+                this.velocity.x *= -1;
+            } else {
+                this.velocity.x = 0;
+            }
+        }
+    }
+
+    /* Instead of checking a list of objects, only check surrounding objects */
+    fixWallCollisionsFast(tilemap) {
+        let cb = this.getCollisionBox();
+        let filteredTiles = tilemap.getSpanningLogicalTiles(cb.x, cb.y, cb.w, cb.h);
+        return this.fixWallCollisions(filteredTiles);
+    }
+
+    /* Fix collision between this object and another */
     fixWallCollisions(objs) {
         let cb = this.getCollisionBox();
-        let collision = false;
 
         for (let i = 0; i < objs.length; i++) {
             let othercb = objs[i].getCollisionBox();
 
             if (utils.checkBoxCollision(cb, othercb)) {
-                collision = true;
-
-                /* I was above */
-                if (this.oldPosition.y + cb.h <= othercb.y) {
-                    this.position.y = othercb.y - cb.h;
-                    /* TODO: Move to cannonball */
-                    if (this instanceof Cannonball) {
-                        this.velocity.y *= -1;
-                    } else {
-                        this.velocity.y = 0;
-                    }
-
-                    /* TODO: make more sophisticated collision to move this to
-                     * player class */
-                    if (this instanceof Player) {
-                        this.jumping = false;
-                        this.cannonHit = false;
-                    }
-
-                /* I was below */
-                } else if (this.oldPosition.y >= othercb.y + othercb.h) {
-                    this.position.y = othercb.y + othercb.h;
-                    /* TODO: Move to cannonball */
-                    if (this instanceof Cannonball) {
-                        this.velocity.y *= -1;
-                    } else {
-                        this.velocity.y = 0;
-                    }
-
-                /* I was to the left */
-                } else if (this.oldPosition.x + cb.w <= othercb.x) {
-                    this.position.x = othercb.x - cb.w;
-                    /* TODO: Move to cannonball */
-                    if (this instanceof Cannonball) {
-                        this.velocity.x *= -1;
-                    } else {
-                        this.velocity.x = 0;
-                    }
-
-                /* I was to the right */
-                } else if (this.oldPosition.x >= othercb.x + othercb.w) {
-                    this.position.x = othercb.x + othercb.w;
-                    /* TODO: Move to cannonball */
-                    if (this instanceof Cannonball) {
-                        this.velocity.x *= -1;
-                    } else {
-                        this.velocity.x = 0;
-                    }
-                }
-
-                return collision;
+                this.resolveCollision(cb, othercb);
+                return true;
             }
         }
 
-        return collision;
+        return false;
     }
 
     /* Returns the center x, y of this entity */
@@ -114,10 +121,10 @@ class Entity {
             let collided = false;
             /* To allow wall sliding, we need to update and check x/y separately */
             this.position.x += this.velocity.x;
-            collided |= this.fixWallCollisions(game.tilemaps[game.currentLevel].logicalMap);
+            collided |= this.fixWallCollisionsFast(game.tilemaps[game.currentLevel]);
 
             this.position.y += this.velocity.y;
-            collided |= this.fixWallCollisions(game.tilemaps[game.currentLevel].logicalMap);
+            collided |= this.fixWallCollisionsFast(game.tilemaps[game.currentLevel]);
 
             /* TODO: make specific to cannonball */
             if (this instanceof Cannonball && collided) {

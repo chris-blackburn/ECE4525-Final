@@ -27,9 +27,9 @@ class Tilemap {
         this.visualMap = new Array(this.rows * this.cols);
         this.visualMap.fill(0)
 
-        /* TODO: turn into 2d array or configure raster order for better
-         * searching (instead of doing O(n) search on collisions) */
-        this.logicalMap = [];
+        /* Raster order array of logical blocks */
+        this.logicalMap = new Array(this.rows * this.cols);
+        this.logicalMap.fill(null);
 
         /* Reference to a player object */
         this.player = undefined;
@@ -42,8 +42,9 @@ class Tilemap {
                 switch (this.map[row][col]) {
                 /* Walls */
                 case 'w':
-                    this.logicalMap.push(new Entity(actual.x, actual.y, this.tilesize));
-                    this.visualMap[this.rasterIdx(row, col)] = this.getTileNumber(row, col);
+                    let ridx = this.rasterIdx(row, col);
+                    this.logicalMap[ridx] = new Entity(actual.x, actual.y, this.tilesize);
+                    this.visualMap[ridx] = this.getTileNumber(row, col);
                     break;
 
                 /* Player character */
@@ -54,6 +55,25 @@ class Tilemap {
                 }
             }
         }
+    }
+
+    /* Return a list of objects from the logical grid where the rectangular
+     * object overlaps */
+    getSpanningLogicalTiles(x, y, w, h) {
+        let gridStart = this.getGridIdx(x, y);
+        let gridEnd = this.getGridIdx(x + w, y + h);
+
+        let filteredTiles = [];
+        for (let col = gridStart.col; col <= gridEnd.col; col++) {
+            for (let row = gridStart.row; row <= gridEnd.row; row++) {
+                let ltile = this.logicalMap[this.rasterIdx(row, col)];
+                if (ltile !== null) {
+                    filteredTiles.push(ltile);
+                }
+            }
+        }
+
+        return filteredTiles;
     }
 
     rasterIdx(row, col) {
