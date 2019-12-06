@@ -99,7 +99,18 @@ class Entity {
             let othercb = objs[i].getCollisionBox();
 
             if (utils.checkBoxCollision(cb, othercb)) {
-                this.resolveCollision(cb, othercb);
+                /* Collect the collectable */
+                if (objs[i] instanceof Collectable) {
+                    if (this instanceof Player && !objs[i].collected) {
+                        this.collectablesFound += 1;
+                        objs[i].collected = true;
+                    }
+
+                    continue;
+                } else {
+                    this.resolveCollision(cb, othercb);
+                }
+
                 return true;
             }
         }

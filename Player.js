@@ -24,6 +24,7 @@ class Player extends Entity {
 
         this.baseHealth = 3;
         this.health = this.baseHealth;
+        this.collectablesFound = 0;
     }
 
     update(game) {

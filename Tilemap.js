@@ -31,6 +31,8 @@ class Tilemap {
         this.logicalMap = new Array(this.rows * this.cols);
         this.logicalMap.fill(null);
 
+        this.totalCollectables = 0;
+
         this.enemies = [];
 
         /* Reference to a player object */
@@ -39,16 +41,23 @@ class Tilemap {
         for (let row = 0; row < this.rows; row++) {
             for (let col = 0; col < this.cols; col++) {
                 let actual = createVector(col * this.tilesize, row * this.tilesize);
+                let ridx = this.rasterIdx(row, col);
 
                 /* Parse the tiles */
                 switch (this.map[row][col]) {
                 /* Walls */
                 case 'w':
-                    let ridx = this.rasterIdx(row, col);
                     this.logicalMap[ridx] = new Entity(actual.x, actual.y, this.tilesize);
                     this.visualMap[ridx] = this.getTileNumber(row, col);
                     break;
+
+                /* Collectables */
+                case 'c':
+                    this.logicalMap[ridx] = new Collectable(actual.x, actual.y);
+                    this.totalCollectables += 1;
+                    break;
                 
+                /* Simple enemies */
                 case 's':
                     this.enemies.push(new SimpleEnemy(actual.x, actual.y, this.tilesize));
                     break;
@@ -173,7 +182,7 @@ class Tilemap {
         } else if (n === 251) {
             sx = 2 * this.tilesize;
             sy = 4 * this.tilesize;
-        }  else if (n === 247) {
+        } else if (n === 247) {
             sx = 3 * this.tilesize;
             sy = 4 * this.tilesize;
         } else {
@@ -202,10 +211,12 @@ class Tilemap {
 
         /* Draw player health, then overlay health added from collectables */
         let playerHealth = 160 * (this.player.health / this.player.baseHealth);
-        let pollenHealth = 160 * (41 / 132); // TODO: Pollen health
+        let pollenHealth = 160 * (this.player.collectablesFound / this.totalCollectables);
         rect(10, 10, playerHealth, 20, 5, 40, 5, 40);
-        fill(255, 255, 0);
-        rect(10, 10, pollenHealth, 20, 5, 40, 5, 40);
+        if (pollenHealth !== 0) {
+            fill(255, 255, 0);
+            rect(10, 10, pollenHealth, 20, 5, 40, 5, 40);
+        }
 
         /* Pollen collected */
         fill(255, 255, 255);
@@ -214,7 +225,7 @@ class Tilemap {
         textFont(assets.getFont("options_font"));
         textAlign(LEFT, BASELINE);
         textSize(16);
-        text("41", 64, 40 + 16); // TODO: pollen collected
+        text(this.player.collectablesFound, 64, 40 + 16);
 
         this.player.shootCooldown.draw(20, 48);
     }
@@ -233,14 +244,21 @@ class Tilemap {
         for (let col = gridStart.col; col <= gridEnd.col; col++) {
             for (let row = gridStart.row; row <= gridEnd.row; row++) {
                 let tile = this.map[row][col];
-                let vtile = this.visualMap[this.rasterIdx(row, col)];
+                let ridx = this.rasterIdx(row, col);
+                let vtile = this.visualMap[ridx];
+                let ltile = this.logicalMap[ridx];
                 let x = (col * this.tilesize) - this.camera.x;
                 let y = (row * this.tilesize) - this.camera.y;
 
-                if (tile === 'w') {
+                if ("w".includes(tile)) {
                     fill(30, 30, 30);
                     noStroke();
                     this.drawTilesetImg(x, y, vtile);
+                } else if (tile === "c" && !ltile.collected) {
+                    push();
+                    translate(-this.camera.x, -this.camera.y);
+                    ltile.draw(this.camera);
+                    pop();
                 }
             }
         }
