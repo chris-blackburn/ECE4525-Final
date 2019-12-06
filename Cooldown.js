@@ -42,7 +42,11 @@ class Cooldown {
             stroke(255, 255, 0);
             strokeWeight(6);
             noFill();
-            arc(x + camera.x, y + camera.y, tilesize / 2, tilesize / 2, 0, 360 * (this.currentTime / this.totalTime));
+            if (camera) {
+                arc(x + camera.x, y + camera.y, tilesize / 2, tilesize / 2, 0, 360 * (this.currentTime / this.totalTime));
+            } else {
+                arc(x, y, tilesize / 2, tilesize / 2, 0, 360 * (this.currentTime / this.totalTime));
+            }
         }
     }
 }

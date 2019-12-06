@@ -21,6 +21,9 @@ class Player extends Entity {
         this.shootCooldown = new Cooldown(350);
         this.myCannonball = new Cannonball(this.x, this.y);
         this.cannonHit = false;
+
+        this.baseHealth = 3;
+        this.health = this.baseHealth;
     }
 
     update(game) {
@@ -144,6 +147,5 @@ class Player extends Entity {
         pop();
 
         this.myCannonball.draw();
-        this.shootCooldown.draw(width - tilesize * 2, height - tilesize * 2, camera);
     }
 }

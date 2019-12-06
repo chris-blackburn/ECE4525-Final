@@ -164,6 +164,7 @@ class Entity {
          * current angle. */
         fill(255, 0, 0);
         stroke(0, 0, 0);
+        strokeWeight(1);
         rect(this.position.x, this.position.y, this.w, this.h);
         push();
         translate(center.x, center.y);

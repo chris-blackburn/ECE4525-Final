@@ -187,6 +187,38 @@ class Tilemap {
         image(assets.getImage("grassy_tileset"), x, y, this.tilesize, this.tilesize, sx, sy, this.tilesize, this.tilesize);
     }
 
+    drawUI() {
+        fill(0, 0, 0, 80);
+        noStroke();
+        rect(4, 4, 172, 62, 5, 5);
+
+        /* Draw the player's health bar */
+        fill(0, 0, 0);
+        stroke(0, 0, 0);
+        strokeWeight(8);
+        rect(10, 10, 160, 20, 5, 40, 5, 40);
+        noStroke();
+        fill(255, 0, 0);
+
+        /* Draw player health, then overlay health added from collectables */
+        let playerHealth = 160 * (this.player.health / this.player.baseHealth);
+        let pollenHealth = 160 * (41 / 132); // TODO: Pollen health
+        rect(10, 10, playerHealth, 20, 5, 40, 5, 40);
+        fill(255, 255, 0);
+        rect(10, 10, pollenHealth, 20, 5, 40, 5, 40);
+
+        /* Pollen collected */
+        fill(255, 255, 255);
+        rect(40, 40, 16, 16); // TODO: pollen img
+
+        textFont(assets.getFont("options_font"));
+        textAlign(LEFT, BASELINE);
+        textSize(16);
+        text("41", 64, 40 + 16); // TODO: pollen collected
+
+        this.player.shootCooldown.draw(20, 48);
+    }
+
     /* Render the tilemap. Only draw tiles inside the camera */
     draw() {
         assets.drawImage("background", -this.camera.x, -this.camera.y);
@@ -221,5 +253,8 @@ class Tilemap {
 
         this.player.draw(this.camera);
         pop();
+
+        /* UI elements on top */
+        this.drawUI();
     }
 }
