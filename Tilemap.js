@@ -37,6 +37,8 @@ class Tilemap {
 
         this.enemies = [];
 
+        this.hiddenTriggers = [];
+
         /* Reference to a player object */
         this.player = undefined;
 
@@ -68,6 +70,18 @@ class Tilemap {
                 /* Simple enemies */
                 case 's':
                     this.enemies.push(new SimpleEnemy(actual.x, actual.y, this.tilesize));
+                    break;
+
+                /* Trigger for activating final boss */
+                case 'h':
+                    this.logicalMap[ridx] = new HiddenTrigger(actual.x, actual.y);
+                    this.hiddenTriggers.push(this.logicalMap[ridx]);
+                    break;
+
+                /* Queen bee boss */
+                case 'B':
+                    this.finalBoss = new Boss(actual.x, actual.y);
+                    this.enemies.push(this.finalBoss);
                     break;
 
                 /* Player character */

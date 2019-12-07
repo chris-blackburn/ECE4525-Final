@@ -6,7 +6,8 @@ class Game {
             MENU: 1,
             INSTR: 2,
             MAIN: 3,
-            LOSE: 4
+            LOSE: 4,
+            WIN: 5
         };
 
         this.currentGameState = this.gameStates.MAIN;
@@ -166,6 +167,24 @@ class Game {
         text("Click to return to main menu", width / 2, 385);
     }
 
+    drawWin() {
+        background(0, 0, 0);
+        textAlign(CENTER, CENTER);
+        textFont(assets.getFont("options_font"));
+
+        textSize(30);
+        fill(255, 255, 255);
+        noStroke();
+        text("You Win!!!", width / 2, height / 2);
+
+        textSize(20);
+        text("Final Score: " + this.tilemaps[this.currentLevel].player.collectablesFound + "/" + this.tilemaps[this.currentLevel].totalCollectables,
+            width / 2, (height / 2) + 50);
+
+        textSize(10);
+        text("Click to return to main menu", width / 2, 385);
+    }
+
     /* To be called every frame. Redirects to the appropriate draw function
      * depending on the game state. */
     draw() {
@@ -182,6 +201,9 @@ class Game {
             break;
         case this.gameStates.LOSE:
             this.drawLose();
+            break;
+        case this.gameStates.WIN:
+            this.drawWin();
             break;
         }
     }
@@ -235,13 +257,18 @@ class Game {
             }
         });
 
+        if (currentTilemap.finalBoss.health <= 0) {
+            this.currentGameState = this.gameStates.WIN;
+            return;
+        }
+
         /* Set the camera position to track the player */
         let playerCenter = player.getCenter();
         currentTilemap.camera.setPos(playerCenter.x - (width / 2),
             playerCenter.y - (height / 2));
     }
 
-    updateLose() {
+    upateWin() {
         if (mouseGotClicked) {
             this.currentGameState = this.gameStates.MENU;
         }
@@ -261,7 +288,8 @@ class Game {
             this.updateMain();
             break;
         case this.gameStates.LOSE:
-            this.updateLose();
+        case this.gameStates.WIN:
+            this.upateWin();
             break;
         }
     }

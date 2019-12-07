@@ -88,11 +88,11 @@ class Entity {
     fixWallCollisionsFast(tilemap) {
         let cb = this.getCollisionBox();
         let filteredTiles = tilemap.getSpanningLogicalTiles(cb.x, cb.y, cb.w, cb.h);
-        return this.fixWallCollisions(filteredTiles);
+        return this.fixWallCollisions(tilemap, filteredTiles);
     }
 
     /* Fix collision between this object and another */
-    fixWallCollisions(objs) {
+    fixWallCollisions(tilemap, objs) {
         let cb = this.getCollisionBox();
 
         for (let i = 0; i < objs.length; i++) {
@@ -116,6 +116,17 @@ class Entity {
                         this.takeHealth(2);
                         this.resolveCollision(cb, othercb);
                     }
+
+                /* Trigger the final boss */
+                } else if (objs[i] instanceof HiddenTrigger) {
+                    if (this instanceof Player && !objs[i].triggered) {
+                        tilemap.finalBoss.activate();
+                        tilemap.hiddenTriggers.forEach((ht) => {
+                            ht.disable();
+                        });
+                    }
+
+                    continue;
                 } else {
                     this.resolveCollision(cb, othercb);
                 }
@@ -132,10 +143,18 @@ class Entity {
         let cb = this.getCollisionBox();
 
         for (let i = 0; i < tilemap.enemies.length; i++) {
+            if (tilemap.enemies[i] instanceof Boss && !tilemap.finalBoss.active) {
+                continue;
+            }
+
             let enemycb = tilemap.enemies[i].getCollisionBox();
 
             if (utils.checkBoxCollision(cb, enemycb)) {
                 this.resolveCollision(cb, enemycb);
+                if (tilemap.enemies[i] instanceof Boss) {
+                    tilemap.enemies[i].takeHealth(tilemap);
+                }
+
                 return true;
             }
         }
