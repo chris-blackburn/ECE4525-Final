@@ -1,7 +1,5 @@
 'use strict';
 
-const THORNS_TILE = 100;
-
 /* I wanted to make a more sophisticated tiling system so that I could separate
  * visual from logical tiles. I also wanted to make use of my own tile sets for
  * visuals - instead of manually picking what image goes into what tile, I
@@ -58,7 +56,6 @@ class Tilemap {
                 /* Thorns */
                 case 't':
                     this.logicalMap[ridx] = new Thorns(actual.x, actual.y);
-                    this.visualMap[ridx] = THORNS_TILE;
                     break;
 
                 /* Collectables */
@@ -207,10 +204,6 @@ class Tilemap {
         } else if (n === 247) {
             sx = 3 * this.tilesize;
             sy = 4 * this.tilesize;
-        } else if (n === THORNS_TILE) {
-            fill(230, 20, 20);
-            rect(x, y, tilesize, tilesize, 20); // TODO: thorns img
-            return;
         } else {
             /* Only looking at a few corner cases, so for the most part, we look at
              * NSEW. */
@@ -254,8 +247,7 @@ class Tilemap {
 
         /* Pollen collected */
         noStroke();
-        fill(255, 255, 0);
-        rect(40, 40, 16, 16, 5); // TODO: pollen img
+        assets.drawImage("pollen_small", 40, 40, 16, 16);
         fill(255, 255, 255);
 
         textFont(assets.getFont("options_font"));
@@ -286,11 +278,16 @@ class Tilemap {
                 let x = (col * this.tilesize) - this.camera.x;
                 let y = (row * this.tilesize) - this.camera.y;
 
-                if ("wt".includes(tile)) {
+                if ("w".includes(tile)) {
                     fill(30, 30, 30);
                     noStroke();
                     this.drawTilesetImg(x, y, vtile);
                 } else if (tile === "c" && !ltile.collected) {
+                    push();
+                    translate(-this.camera.x, -this.camera.y);
+                    ltile.draw(this.camera);
+                    pop();
+                } else if (tile === "t") {
                     push();
                     translate(-this.camera.x, -this.camera.y);
                     ltile.draw(this.camera);

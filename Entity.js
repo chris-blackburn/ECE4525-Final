@@ -116,6 +116,7 @@ class Entity {
                 } else if (objs[i] instanceof Thorns) {
                     if (this instanceof Cannonball) {
                         this.bouncesLeft = 0;
+                        return true;
                     } else if (this instanceof Player) {
                         this.takeHealth(2);
                         this.resolveCollision(cb, othercb);
@@ -131,9 +132,9 @@ class Entity {
                     }
 
                     continue;
-                } else {
-                    this.resolveCollision(cb, othercb);
                 }
+            
+                this.resolveCollision(cb, othercb);
 
                 return true;
             }
