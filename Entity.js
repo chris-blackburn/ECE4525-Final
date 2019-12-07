@@ -107,6 +107,15 @@ class Entity {
                     }
 
                     continue;
+
+                /* No bounce off thorns, player loses health */
+                } else if (objs[i] instanceof Thorns) {
+                    if (this instanceof Cannonball) {
+                        this.bouncesLeft = 0;
+                    } else if (this instanceof Player) {
+                        this.takeHealth(2);
+                        this.resolveCollision(cb, othercb);
+                    }
                 } else {
                     this.resolveCollision(cb, othercb);
                 }

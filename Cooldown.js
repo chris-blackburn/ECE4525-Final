@@ -4,9 +4,9 @@
 class Cooldown {
     constructor(total) {
         this.totalTime = total;
-        this.currentTime = total;
+        this.currentTime = 0;
 
-        this.expired = false;
+        this.expired = true;
         this.active = false;
     }
 
@@ -19,7 +19,7 @@ class Cooldown {
 
     /* If not already active and expired, start the timer */
     start() {
-        if (!this.active) {
+        if (!this.active || this.expired) {
             this.currentTime = this.totalTime;
             this.expired = false;
             this.active = true;

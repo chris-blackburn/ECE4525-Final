@@ -1,5 +1,7 @@
 'use strict';
 
+const THORNS_TILE = 100;
+
 /* I wanted to make a more sophisticated tiling system so that I could separate
  * visual from logical tiles. I also wanted to make use of my own tile sets for
  * visuals - instead of manually picking what image goes into what tile, I
@@ -49,6 +51,12 @@ class Tilemap {
                 case 'w':
                     this.logicalMap[ridx] = new Entity(actual.x, actual.y, this.tilesize);
                     this.visualMap[ridx] = this.getTileNumber(row, col);
+                    break;
+
+                /* Thorns */
+                case 't':
+                    this.logicalMap[ridx] = new Thorns(actual.x, actual.y);
+                    this.visualMap[ridx] = THORNS_TILE;
                     break;
 
                 /* Collectables */
@@ -185,6 +193,10 @@ class Tilemap {
         } else if (n === 247) {
             sx = 3 * this.tilesize;
             sy = 4 * this.tilesize;
+        } else if (n === THORNS_TILE) {
+            fill(230, 20, 20);
+            rect(x, y, tilesize, tilesize, 20); // TODO: thorns img
+            return;
         } else {
             /* Only looking at a few corner cases, so for the most part, we look at
              * NSEW. */
@@ -219,8 +231,9 @@ class Tilemap {
         }
 
         /* Pollen collected */
+        fill(255, 255, 0);
+        rect(40, 40, 16, 16, 5); // TODO: pollen img
         fill(255, 255, 255);
-        rect(40, 40, 16, 16); // TODO: pollen img
 
         textFont(assets.getFont("options_font"));
         textAlign(LEFT, BASELINE);
@@ -250,7 +263,7 @@ class Tilemap {
                 let x = (col * this.tilesize) - this.camera.x;
                 let y = (row * this.tilesize) - this.camera.y;
 
-                if ("w".includes(tile)) {
+                if ("wt".includes(tile)) {
                     fill(30, 30, 30);
                     noStroke();
                     this.drawTilesetImg(x, y, vtile);

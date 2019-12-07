@@ -18,13 +18,28 @@ class Player extends Entity {
         this.jumpForce = createVector(0, -5);
 
         /* Only one cannon ball at a time. keep state of being hit */
-        this.shootCooldown = new Cooldown(350);
+        this.shootCooldown = new Cooldown(500);
         this.myCannonball = new Cannonball(this.x, this.y);
         this.cannonHit = false;
 
         this.baseHealth = 3;
         this.health = this.baseHealth;
         this.collectablesFound = 0;
+
+        this.invincibleTimer = new Cooldown(1000);
+    }
+
+    /* Take health away from the player, start by taking away from collectables
+     * then move to base health. */
+    takeHealth(amt) {
+        if (this.invincibleTimer.expired) {
+            this.invincibleTimer.start();
+            if (this.collectablesFound > 0) {
+                this.collectablesFound = max(0, this.collectablesFound - amt);
+            } else {
+                this.health = max(0, this.health - amt);
+            }
+        }
     }
 
     update(game) {
@@ -111,6 +126,7 @@ class Player extends Entity {
         this.myCannonball.update(game);
         this.shootCooldown.update();
         this.walkingFrames.update();
+        this.invincibleTimer.update();
     }
 
     draw(camera) {

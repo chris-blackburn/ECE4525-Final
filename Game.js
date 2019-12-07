@@ -5,10 +5,11 @@ class Game {
         this.gameStates = {
             MENU: 1,
             INSTR: 2,
-            MAIN: 3
+            MAIN: 3,
+            LOSE: 4
         };
 
-        this.currentGameState = this.gameStates.MAIN;
+        this.currentGameState = this.gameStates.MENU;
 
         /* Create tilemap ojects from the levels */
         this.tilemaps = [];
@@ -109,16 +110,16 @@ class Game {
             fill(255, 50, 20);
             textFont(assets.getFont("options_font"));
             textSize(30);
-            text("Cannon Boi", 200, 75);
+            text("Cannon Boi", width / 2, 75);
 
             /* Draw the menu text and options text */
             fill(255, 255, 255);
             textSize(15);
-            text("Start Game", 200, 200, 170, 20);
-            text("Instructions", 200, 250, 180, 20);
+            text("Start Game", width / 2, 200, 170, 20);
+            text("Instructions", width / 2, 250, 180, 20);
 
             textSize(8);
-            text("Chris Blackburn", 200, 390);
+            text("Chris Blackburn", width / 2, 390);
         }
 
         pop();
@@ -129,25 +130,39 @@ class Game {
     drawInstr() {
         this.drawMenu(true);
         textAlign(CENTER, CENTER);
+        rectMode(CENTER);
         textFont(assets.getFont("options_font"));
 
         fill(255, 255, 255);
         textSize(15);
-        text("How to Play", 200, 20);
+        text("How to Play", width / 2, 20);
 
         textSize(10);
-        text("Click to return", 200, 385);
+        text("Click to return", width / 2, 385);
 
         textSize(12);
         text("Use WASD to move and SPACE to jump.\n\n\n" +
             "Aim your cannon with the mouse and click to shoot.\n\n\n" +
             "Your bullets will bounce off walls and enemies. " +
             "Use the ricochet to give yourself a boost!",
-            50, 10, 300, 300);
+            width / 2, height / 3, 300, 300);
     }
 
     drawMain() {
         this.tilemaps[this.currentLevel].draw();
+    }
+
+    drawLose() {
+        background(0, 0, 0);
+        textAlign(CENTER, CENTER);
+        textFont(assets.getFont("options_font"));
+
+        textSize(30);
+        fill(255, 255, 255);
+        text("Game Over", width / 2, height / 2);
+
+        textSize(10);
+        text("Click to return to main menu", width / 2, 385);
     }
 
     /* To be called every frame. Redirects to the appropriate draw function
@@ -164,6 +179,9 @@ class Game {
         case this.gameStates.MAIN:
             this.drawMain();
             break;
+        case this.gameStates.LOSE:
+            this.drawLose();
+            break;
         }
     }
     /* **************** END DRAW FUNCTIONS **************** */
@@ -172,9 +190,15 @@ class Game {
     /* update the game's main menu (wait for events, animations) */
     updateMenu() {
         if (mouseGotClicked) {
-            if (utils.mouseWithin(200, 200, 170, 40)) {
+            if (utils.mouseWithin(width / 2, 200, 170, 40)) {
+                /* Easiest way to reset is to just re-construct tilemaps */
+                this.currentLevel = 0;
+                for (let i = 0; i < this.tilemaps.length; i++) {
+                    this.tilemaps[i] = new Tilemap(levels[i], tilesize);
+                }
+
                 this.currentGameState = this.gameStates.MAIN;
-            } else if (utils.mouseWithin(200, 250, 190, 40)) {
+            } else if (utils.mouseWithin(width / 2, 250, 190, 40)) {
                 this.currentGameState = this.gameStates.INSTR;
             }
         }
@@ -193,6 +217,12 @@ class Game {
         player.applyForce(gravity);
         player.update(this);
 
+        /* If the player has no more base health, then game over */
+        if (player.health <= 0) {
+            this.currentGameState = this.gameStates.LOSE;
+            return;
+        }
+
         currentTilemap.enemies.forEach((enemy) => {
             enemy.update(this);
         });
@@ -201,6 +231,12 @@ class Game {
         let playerCenter = player.getCenter();
         currentTilemap.camera.setPos(playerCenter.x - (width / 2),
             playerCenter.y - (height / 2));
+    }
+
+    updateLose() {
+        if (mouseGotClicked) {
+            this.currentGameState = this.gameStates.MENU;
+        }
     }
 
     /* To be called every frame. Redirects to the appropriate update function
@@ -215,6 +251,9 @@ class Game {
             break;
         case this.gameStates.MAIN:
             this.updateMain();
+            break;
+        case this.gameStates.LOSE:
+            this.updateLose();
             break;
         }
     }
