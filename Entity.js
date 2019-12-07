@@ -86,6 +86,10 @@ class Entity {
 
     /* Instead of checking a list of objects, only check surrounding objects */
     fixWallCollisionsFast(tilemap) {
+        if (this instanceof Boss || this instanceof Projectile) {
+            return false;
+        }
+
         let cb = this.getCollisionBox();
         let filteredTiles = tilemap.getSpanningLogicalTiles(cb.x, cb.y, cb.w, cb.h);
         return this.fixWallCollisions(tilemap, filteredTiles);
