@@ -78,8 +78,6 @@ class Tilemap {
                 }
             }
         }
-
-        console.log(this.enemies.length);
     }
 
     /* Return a list of objects from the logical grid where the rectangular
@@ -234,7 +232,7 @@ class Tilemap {
 
         /* Signal that the player is invincible */
         if (this.player.invincibleTimer.active) {
-            stroke(211,211,211);
+            stroke(211, 211, 211);
             strokeWeight(8);
             noFill();
             rect(10, 10, 160, 20, 5, 40, 5, 40);

@@ -33,6 +33,7 @@ class Player extends Entity {
      * then move to base health. */
     takeHealth(amt) {
         if (this.invincibleTimer.expired) {
+            assets.playSound("seed_man_hurt");
             this.invincibleTimer.start();
             if (this.collectablesFound > 0) {
                 this.collectablesFound = max(0, this.collectablesFound - amt);
@@ -90,6 +91,7 @@ class Player extends Entity {
         /* Shooting */
         let camera = game.tilemaps[game.currentLevel].camera;
         if (keys[32] && !this.shootCooldown.active) {
+            assets.playSound("seed_man_shoot");
             this.shootCooldown.start();
             this.myCannonball.reset();
             this.myCannonball.shoot(this.getCenter(),
@@ -103,6 +105,7 @@ class Player extends Entity {
             /* If the cannonball hit us, then we need to reset it and apply its
              * velocity to us */
             if (collided) {
+                assets.playSound("seed_man_bullet_self");
                 this.velocity.y = 0;
                 let ricochetForce = this.myCannonball.velocity;
                 ricochetForce.setMag(5);

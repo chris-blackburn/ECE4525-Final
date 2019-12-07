@@ -29,6 +29,12 @@ function preload() {
   assets.addFont(loadFont('assets/A_Goblin_Appears.otf'), "options_font");
 
   assets.addImage(loadImage('assets/grassy_tileset_ordered.png'), "grassy_tileset");
+
+  assets.addSound(loadSound('assets/seed_man_hurt'), 1, "seed_man_hurt");
+  assets.addSound(loadSound('assets/seed_man_shoot'), 1, "seed_man_shoot");
+  assets.addSound(loadSound('assets/seed_man_bullet_bounce'), 0.3, "seed_man_bullet_bounce");
+  assets.addSound(loadSound('assets/seed_man_bullet_self'), 1, "seed_man_bullet_self");
+  /* TODO: music */
 }
 
 function setup() {

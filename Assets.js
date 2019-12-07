@@ -7,8 +7,10 @@ class Assets {
     fonts;
 
     constructor() {
+        soundFormats("mp3");
         this.images = {};
         this.fonts = {};
+        this.sounds = {};
     }
 
     addFont(font, name) {
@@ -30,6 +32,15 @@ class Assets {
     copyImage(sourceName, destName) {
         this.images[destName] = this.images[sourceName].get();
         return this.images[destName];
+    }
+
+    addSound(sound, volume, name) {
+        this.sounds[name] = sound;
+        this.sounds[name].setVolume(volume);
+    }
+
+    playSound(name) {
+        this.sounds[name].play();
     }
 
     drawImage(name, x, y, w, h) {

@@ -178,6 +178,10 @@ class Entity {
 
             /* TODO: make specific to cannonball */
             if (this instanceof Cannonball && collided) {
+                if (this.bouncesLeft > 0) {
+                    assets.playSound("seed_man_bullet_bounce");
+                }
+
                 if (--this.bouncesLeft < 0) {
                     this.reset();
                 }

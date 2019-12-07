@@ -39,6 +39,6 @@ let levels = [
    "w                                 s                                                                  wwwwwwwwwwwww             w",
    "w                                 s                                                                  wwwwwwwwwwwww             w",
    "w                                 s                                   wwwwwwwwwwwwwwwwww             wwwwwwwwwwwww             w",
-   "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+   "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
   ]
 ];
