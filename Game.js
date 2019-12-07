@@ -253,7 +253,9 @@ class Game {
             /* Check collision against the player */
             let enemycb = enemy.getCollisionBox();
             if (utils.checkBoxCollision(playercb, enemycb)) {
-                player.takeHealth(1);
+                if (!(enemy instanceof Boss && !enemy.active)) {
+                    player.takeHealth(1);
+                }
             }
         });
 
