@@ -78,6 +78,8 @@ class Tilemap {
                 }
             }
         }
+
+        console.log(this.enemies.length);
     }
 
     /* Return a list of objects from the logical grid where the rectangular
@@ -230,7 +232,16 @@ class Tilemap {
             rect(10, 10, pollenHealth, 20, 5, 40, 5, 40);
         }
 
+        /* Signal that the player is invincible */
+        if (this.player.invincibleTimer.active) {
+            stroke(211,211,211);
+            strokeWeight(8);
+            noFill();
+            rect(10, 10, 160, 20, 5, 40, 5, 40);
+        }
+
         /* Pollen collected */
+        noStroke();
         fill(255, 255, 0);
         rect(40, 40, 16, 16, 5); // TODO: pollen img
         fill(255, 255, 255);

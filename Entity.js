@@ -127,6 +127,22 @@ class Entity {
         return false;
     }
 
+    /* For use with cannonball primarily */
+    fixEnemyCollisions(tilemap) {
+        let cb = this.getCollisionBox();
+
+        for (let i = 0; i < tilemap.enemies.length; i++) {
+            let enemycb = tilemap.enemies[i].getCollisionBox();
+
+            if (utils.checkBoxCollision(cb, enemycb)) {
+                this.resolveCollision(cb, enemycb);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /* Returns the center x, y of this entity */
     getCenter() {
         return createVector(this.position.x + this.w / 2, this.position.y + this.h / 2);
@@ -143,6 +159,11 @@ class Entity {
             this.position.x += this.velocity.x;
             collided |= this.fixWallCollisionsFast(game.tilemaps[game.currentLevel]);
 
+            /* Cannon ball collision with enemies */
+            if (this instanceof Cannonball && this.fired) {
+                collided |= this.fixEnemyCollisions(game.tilemaps[game.currentLevel]);
+            }
+
             /* Simple enemy changes direction when it hits a wall */
             if (this instanceof SimpleEnemy && collided) {
                 this.dir *= -1;
@@ -150,6 +171,10 @@ class Entity {
 
             this.position.y += this.velocity.y;
             collided |= this.fixWallCollisionsFast(game.tilemaps[game.currentLevel]);
+
+            if (this instanceof Cannonball && this.fired) {
+                collided |= this.fixEnemyCollisions(game.tilemaps[game.currentLevel]);
+            }
 
             /* TODO: make specific to cannonball */
             if (this instanceof Cannonball && collided) {

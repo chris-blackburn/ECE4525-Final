@@ -9,7 +9,7 @@ class Game {
             LOSE: 4
         };
 
-        this.currentGameState = this.gameStates.MENU;
+        this.currentGameState = this.gameStates.MAIN;
 
         /* Create tilemap ojects from the levels */
         this.tilemaps = [];
@@ -159,6 +159,7 @@ class Game {
 
         textSize(30);
         fill(255, 255, 255);
+        noStroke();
         text("Game Over", width / 2, height / 2);
 
         textSize(10);
@@ -223,8 +224,15 @@ class Game {
             return;
         }
 
+        let playercb = player.getCollisionBox();
         currentTilemap.enemies.forEach((enemy) => {
             enemy.update(this);
+
+            /* Check collision against the player */
+            let enemycb = enemy.getCollisionBox();
+            if (utils.checkBoxCollision(playercb, enemycb)) {
+                player.takeHealth(1);
+            }
         });
 
         /* Set the camera position to track the player */
