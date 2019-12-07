@@ -4,6 +4,7 @@
 class Boss extends Entity {
     constructor(x, y) {
         super(x, y, tilesize * 2);
+        this.size = tilesize * 2;
 
         /* Final boss should not try to attack until activated */
         this.active = false;
@@ -12,8 +13,8 @@ class Boss extends Entity {
         this.health = this.totalHealth;
 
         this.moveTimer = new Cooldown(5000);
-        this.invincibleTimer = new Cooldown(10);
-        this.attackTimer = new Cooldown(4000);
+        this.invincibleTimer = new Cooldown(300);
+        this.attackTimer = new Cooldown(3000);
 
         this.currentProjectile = 0;
         this.projectiles = (() => {
@@ -23,6 +24,16 @@ class Boss extends Entity {
             }
             return arr;
         })();
+
+        this.flyingFrames = new Keyframes([
+            utils.makeRect(            0, 0),
+            utils.makeRect(    this.size, 0),
+            utils.makeRect(this.size * 2, 0),
+            utils.makeRect(    this.size, 0),
+        ], 50);
+        this.flyingFrames.start();
+
+        this.dir = 1;
     }
 
     activate() {
@@ -76,10 +87,14 @@ class Boss extends Entity {
                 this.applyForce(attractForce);
             }
 
+            let toPlayer = p5.Vector.sub(player.position, this.position);
+            this.dir = toPlayer.x;
+
             super.update(game);
             this.attackTimer.update();
             this.moveTimer.update();
             this.invincibleTimer.update();
+            this.flyingFrames.update();
             this.projectiles.forEach((projectile) => {
                 if (projectile.fired && utils.checkBoxCollision(player.getCollisionBox(), projectile.getCollisionBox())) {
                     projectile.fired = false;
@@ -92,7 +107,20 @@ class Boss extends Entity {
 
     draw(camera) {
         if (this.active) {
-            super.draw(camera);
+            let dx = this.position.x;
+            let dy = this.position.y;
+
+            let cf = this.flyingFrames.getCurrent();
+
+            push();
+            if (this.dir < 0) {
+                scale(-1, 1);
+                dx = (dx * -1) - tilesize;
+            }
+    
+            image(assets.getImage("queen_bee"), floor(dx), dy, this.size, this.size, cf.x, cf.y, this.size, this.size);
+            pop();
+
             this.projectiles.forEach((projectile) => {
                 projectile.draw(camera);
             });

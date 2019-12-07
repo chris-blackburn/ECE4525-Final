@@ -27,6 +27,7 @@ function preload() {
   assets.addImage(loadImage('assets/pollen.png'), "pollen");
   assets.addImage(loadImage('assets/pollen_small.png'), "pollen_small");
   assets.addImage(loadImage('assets/thorns.png'), "thorns");
+  assets.addImage(loadImage('assets/queen_bee.png'), "queen_bee");
 
   /* Credit to Segel Artwork for background image */
   assets.addImage(loadImage('assets/background.png'), "background");
