@@ -16,7 +16,7 @@ let levels = [
    "w            s    wwwwwwwwwwwwtt                                      wwwwwwwwwwwwwwwwww                                       w",
    "w    www     w                                                        wwwwwwwwwwwwwwwwww                                       w",
    "w    www     w                        s                               wwwwwwwwwwwwwwwwww                                       w",
-   "w    www     w                        s                               wwwwwwwwwwwwwwwwww                  ph     Bb            w",
+   "w    www     w                        s                               wwwwwwwwwwwwwwwwww                         Bb            w",
    "w              wwwwwww                s                               wwwwwwwwwwwwwwwwww                  www    bb            w",
    "w    www         w                    s                               wwwwwwwwwwwwwwwwww                 wwwww                 w",
    "w                                                                     wwwwwwwwwwwwwwwwww               wwwwwwwww               w",

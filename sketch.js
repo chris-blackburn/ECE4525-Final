@@ -29,11 +29,7 @@ function preload() {
   assets.addImage(loadImage('assets/thorns.png'), "thorns");
   assets.addImage(loadImage('assets/queen_bee.png'), "queen_bee");
 
-  /* Credit to Segel Artwork for background image */
-  assets.addImage(loadImage('assets/background.png'), "background");
-
   assets.addFont(loadFont('assets/A_Goblin_Appears.otf'), "options_font");
-
   assets.addImage(loadImage('assets/grassy_tileset_ordered.png'), "grassy_tileset");
 
   assets.addSound(loadSound('assets/seed_man_hurt'), 1, "seed_man_hurt");

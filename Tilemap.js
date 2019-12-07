@@ -258,9 +258,15 @@ class Tilemap {
         this.player.shootCooldown.draw(20, 48);
     }
 
+    drawBackground() {
+        let b1 = color(175, 238, 238);
+        let b2 = color(245, 245, 245);
+        utils.setGradient(0, 0, width, height, b1, b2, 1);
+    }
+
     /* Render the tilemap. Only draw tiles inside the camera */
     draw() {
-        assets.drawImage("background", -this.camera.x, -this.camera.y);
+        this.drawBackground();
         /* Get the range of rows and columns to draw */
         let gridStart = this.getGridIdx(this.camera.x, this.camera.y);
         let gridEnd = {
