@@ -45,7 +45,7 @@ class Boss extends Entity {
 
         let shootForce = p5.Vector.sub(to, from);
         shootForce.normalize();
-        shootForce.mult(2);
+        shootForce.mult(2.2);
         p.applyForce(shootForce);
 
         if (this.currentProjectile >= this.projectiles.length) {

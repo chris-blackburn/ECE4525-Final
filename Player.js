@@ -48,13 +48,13 @@ class Player extends Entity {
          * user. If we just hit a cannonball, then walking force acts more like
          * a decay. */
         if (keys[65] && !keys[68]) {
-            if (this.velocity.x >= -this.walkingForce) {
+            if (this.velocity.x >= -this.walkingForce * 1.1) {
                 this.applyForce(this.reverseWalkingForce);
             }
 
             this.walkingFrames.startOnce();
         } else if (keys[68] && !keys[65]) {
-            if (this.velocity.x <= this.walkingForce) {
+            if (this.velocity.x <= this.walkingForce * 1.1) {
                 this.applyForce(this.forwardWalkingForce);
             }
 

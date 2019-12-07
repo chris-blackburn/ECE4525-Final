@@ -12,6 +12,12 @@ class SimpleEnemy extends Entity {
         this.walkingForce = 0.5;
         this.forwardWalkingForce = createVector(this.walkingForce, 0);
         this.reverseWalkingForce = createVector(-this.walkingForce, 0);
+
+        this.flyingFrames = new Keyframes([
+            utils.makeRect(       0, 0),
+            utils.makeRect(tilesize, 0)
+        ], random(60, 80));
+        this.flyingFrames.start();
     }
 
     update(game) {
@@ -27,9 +33,23 @@ class SimpleEnemy extends Entity {
         }
 
         super.update(game);
+        this.flyingFrames.update();
     }
 
     draw(camera) {
-        super.draw(camera);
+        let dx = this.position.x;
+        let dy = this.position.y;
+
+        let cf = this.flyingFrames.getCurrent();
+
+        /* flip the image to correct direction */
+        push();
+        if (this.velocity.x < 0 || cos(this.angle) < 0) {
+            scale(-1, 1);
+            dx = (dx * -1) - tilesize;
+        }
+
+        image(assets.getImage("worker_bee"), floor(dx), dy, tilesize, tilesize, cf.x, cf.y, tilesize, tilesize);
+        pop();
     }
 }
