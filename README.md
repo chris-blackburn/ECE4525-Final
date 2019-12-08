@@ -196,3 +196,7 @@ large as you want with no performance hit. With that, I opted for making a large
 world you could explore, rather than simple, single levels. Certain areas can
 prompt you to do something, like use your seed spit richochet to bounce you up
 higher to get some pollen. The world around you teaches you how to play.
+
+For the game world, I created a tileset of images and wrote some code to pick
+tiles out of that set depending on what's around it. For example, a lone tile
+will look different that a tile surrounded on all sides.
