@@ -54,6 +54,7 @@ function setup() {
   /* Enlarged images for the main menu screen. */
   assets.copyImage("pollen", "pollen_large").resizeNN(128 * 2, 128);
   assets.copyImage("worker_bee", "worker_bee_large").resizeNN(128 * 2, 128);
+  getAudioContext().resume();
 
   gravity = createVector(0, 0.1);
   game = new Game();
