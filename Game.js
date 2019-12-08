@@ -21,6 +21,9 @@ class Game {
         ], 150);
         this.menu_mainchar_wframes.start();
 
+        /* for win screen */
+        this.fallingPollen = [];
+
         /* Create tilemap ojects from the levels */
         this.tilemaps = [];
         this.currentLevel = 0;
@@ -45,6 +48,7 @@ class Game {
             fill(255, 50, 20);
             textFont(assets.getFont("options_font"));
             textSize(30);
+            noStroke();
             text("Seed Boi", width / 2, 75);
 
             /* Draw the menu text and options text */
@@ -70,12 +74,12 @@ class Game {
                 pollenFrame = tilesize;
             }
 
-            image(assets.getImage("pollen"), 3 * width / 4 + 50, 2 * height / 3 - 20, tilesize, tilesize, pollenFrame, 0, tilesize, tilesize);
+            image(assets.getImage("pollen"), floor(3 * width / 4 + 50), floor(2 * height / 3 - 20), tilesize, tilesize, pollenFrame, 0, tilesize, tilesize);
             push();
             scale(-1, 1);
-            image(assets.getImage("pollen"), -(width / 4) - tilesize, height / 3 + 30, tilesize, tilesize, pollenFrame, 0, tilesize, tilesize);
+            image(assets.getImage("pollen"), floor(-(width / 4) - tilesize), floor(height / 3 + 30), tilesize, tilesize, pollenFrame, 0, tilesize, tilesize);
             pop();
-            image(assets.getImage("pollen"), width / 4 - 100, height / 3 + 140, tilesize, tilesize, pollenFrame, 0, tilesize, tilesize);
+            image(assets.getImage("pollen"), floor(width / 4 - 100), floor(height / 3 + 140), tilesize, tilesize, pollenFrame, 0, tilesize, tilesize);
 
             push();
             let wBeeFrame = 0;
@@ -147,12 +151,14 @@ class Game {
     }
 
     drawWin() {
-        background(0, 0, 0);
+        let b1 = color(175, 238, 238);
+        let b2 = color(245, 245, 245);
+        utils.setGradient(0, 0, width, height, b1, b2, 1);
         textAlign(CENTER, CENTER);
         textFont(assets.getFont("options_font"));
 
         textSize(30);
-        fill(255, 255, 255);
+        fill(1, 142, 14);
         noStroke();
         text("You Win!!!", width / 2, height / 2);
 
@@ -161,7 +167,18 @@ class Game {
             width / 2, (height / 2) + 50);
 
         textSize(10);
-        text("Click to return to main menu", width / 2, 385);
+        text("Click to return to main menu", width / 2, 30);
+
+        imageMode(CORNER);
+        for (let i = 0; i < width + tilesize; i += tilesize) {
+            image(assets.getImage("grassy_tileset"), i, height - tilesize, tilesize, tilesize, 2 * tilesize, 3 * tilesize, tilesize, tilesize);
+        }
+
+        image(assets.getImage("main"), tilesize * 4, height - tilesize * 2, tilesize, tilesize, tilesize, 0, tilesize, tilesize);
+
+        this.fallingPollen.forEach((pollen) => {
+            pollen.draw();
+        }); 
     }
 
     /* To be called every frame. Redirects to the appropriate draw function
@@ -251,10 +268,30 @@ class Game {
             playerCenter.y - (height / 2));
     }
 
+    updateLose() {
+        if (mouseGotClicked) {
+            this.currentGameState = this.gameStates.MENU;
+        }
+    }
+
     upateWin() {
         if (mouseGotClicked) {
             this.currentGameState = this.gameStates.MENU;
         }
+
+        if (this.fallingPollen.length < 20) {
+            let e = new Collectable(random(width), random(-height, -tilesize));
+            e.velocity.y = random(1, 3);
+            this.fallingPollen.push(e);
+        }
+
+        this.fallingPollen.forEach((pollen) => {
+            pollen.update();
+            if (pollen.position.y > height) {
+                pollen.position.y = -tilesize;
+                pollen.position.x = random(width);
+            }
+        }); 
     }
 
     /* To be called every frame. Redirects to the appropriate update function
@@ -271,6 +308,8 @@ class Game {
             this.updateMain();
             break;
         case this.gameStates.LOSE:
+            this.updateLose();
+            break;
         case this.gameStates.WIN:
             this.upateWin();
             break;
