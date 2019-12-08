@@ -25,6 +25,7 @@ function preload() {
   assets.addImage(loadImage('assets/pollen_small.png'), "pollen_small");
   assets.addImage(loadImage('assets/thorns.png'), "thorns");
   assets.addImage(loadImage('assets/queen_bee.png'), "queen_bee");
+  assets.addImage(loadImage('assets/seed_spit.png'), "seed_spit");
 
   assets.addImage(loadImage('assets/instructions.png'), "controls");
 

@@ -49,7 +49,7 @@ class Cannonball extends Entity {
 
     draw() {
         if (this.fired) {
-            super.draw();
+            assets.drawImage("seed_spit", this.position.x, this.position.y);
         }
     }
 }
