@@ -10,7 +10,16 @@ class Game {
             WIN: 5
         };
 
-        this.currentGameState = this.gameStates.MAIN;
+        this.currentGameState = this.gameStates.MENU;
+
+        /* For main menu */
+        this.menu_mainchar_wframes = new Keyframes([
+            utils.makeRect(           0,        0),
+            utils.makeRect(2 * tilesize,        0),
+            utils.makeRect(3 * tilesize,        0),
+            utils.makeRect(           0, tilesize)
+        ], 150);
+        this.menu_mainchar_wframes.start();
 
         /* Create tilemap ojects from the levels */
         this.tilemaps = [];
@@ -18,57 +27,6 @@ class Game {
         levels.forEach((level) => {
             this.tilemaps.push(new Tilemap(level, tilesize));
         });
-
-        /* Some state values need to be kept in different screens. */
-        this.stateValues = {
-            menu: {
-                fogSeed: random(1500),
-                drawFog: function() {
-                    let n1 = this.fogSeed;
-                    for (let x = 0; x <= width; x += 4) {
-                        let n2 = 0;
-                        for (let y = 0; y <= height; y += 4) {
-                            let c = map(noise(n1,n2),0,1,0,100);
-                            fill(c + 50, c + 20, c, 200);
-                            noStroke();
-                            rect(x, y, 4, 4);
-                            stroke(0, 0, 0);
-                            n2 += 0.05; // step size in noise
-                        }
-    
-                        n1 += 0.02; // step size in noise
-                    }
-    
-                    this.fogSeed -= 0.01;  // speed of clouds
-                },
-
-                /* To simplify, this is an array of positions to draw clouds. */
-                clouds: [],
-                drawClouds: function() {
-                    if (this.clouds.length === 0) {
-                        this.clouds = (() => {
-                            let arr = [];
-                            for (let i = 0; i < 15; i++) {
-                                arr.push(createVector(i * 40, random(0, 20)));
-                            }
-
-                            return arr;
-                        })();
-                    }
-
-                    noStroke();
-                    fill(150, 150, 150);
-                    this.clouds.forEach((v, idx, me) => {
-                        ellipse(v.x++, v.y, 60);
-                        if (v.x - 25 > width) {
-                            me[idx].x = -25;
-                        }
-                    });
-                },
-
-                cannonSmoke: new ParticleSystem(145, 320, 1, 90)
-            }
-        }
     }
 
     /* **************** BEGIN DRAW FUNCTIONS **************** */
@@ -77,33 +35,9 @@ class Game {
         rectMode(CENTER);
         imageMode(CENTER);
         push();
-        background(255, 127, 80)
-        this.stateValues.menu.drawFog();
-        assets.drawImage("background", 200, 200);
-
-        /* Clouds at the top */
-        this.stateValues.menu.drawClouds();
-
-        fill(60, 60, 60);
-        rect(200, 375, width, 50);
-
-        this.stateValues.menu.cannonSmoke.addParticle();
-        this.stateValues.menu.cannonSmoke.applyForce(createVector(0.01, 0));
-        this.stateValues.menu.cannonSmoke.draw();
-
-        push();
-        translate(100, 340);
-        rotate(-20);
-        assets.drawImage("cannon_menu", 0, 0);
-        pop();
-        assets.drawImage("myguy_menu", 70, 330);
-
-        assets.drawImage("bugboi_menu", 330, 330);
-
-        /* Make text more readable by putting a transparent square over the
-         * canvas. */
-        fill(0, 0, 0, 120);
-        rect(200, 200, width, height);
+        let b1 = color(175, 238, 238);
+        let b2 = color(245, 245, 245);
+        utils.setGradient(0, 0, width, height, b1, b2, 1);
 
         if (!noText) {
             textAlign(CENTER, CENTER);
@@ -111,16 +45,48 @@ class Game {
             fill(255, 50, 20);
             textFont(assets.getFont("options_font"));
             textSize(30);
-            text("Cannon Boi", width / 2, 75);
+            text("Seed Boi", width / 2, 75);
 
             /* Draw the menu text and options text */
-            fill(255, 255, 255);
+            fill(1, 142, 14);
             textSize(15);
             text("Start Game", width / 2, 200, 170, 20);
             text("Instructions", width / 2, 250, 180, 20);
 
             textSize(8);
-            text("Chris Blackburn", width / 2, 390);
+            text("Chris Blackburn", 70, 10);
+
+            imageMode(CORNER);
+            for (let i = 0; i < width + tilesize; i += tilesize) {
+                image(assets.getImage("grassy_tileset"), i, height - tilesize, tilesize, tilesize, 2 * tilesize, 3 * tilesize, tilesize, tilesize);
+            }
+
+            let main_xpos = map(frameCount % 480, 0, 479, -tilesize, width + tilesize * 4);
+            let main_cf = this.menu_mainchar_wframes.getCurrent();
+            image(assets.getImage("main"), main_xpos, height - tilesize * 2, tilesize, tilesize, main_cf.x, main_cf.y, tilesize, tilesize);
+
+            let pollenFrame = 0;
+            if (frameCount % 60 < 30) {
+                pollenFrame = tilesize;
+            }
+
+            image(assets.getImage("pollen"), 3 * width / 4 + 50, 2 * height / 3 - 20, tilesize, tilesize, pollenFrame, 0, tilesize, tilesize);
+            push();
+            scale(-1, 1);
+            image(assets.getImage("pollen"), -(width / 4) - tilesize, height / 3 + 30, tilesize, tilesize, pollenFrame, 0, tilesize, tilesize);
+            pop();
+            image(assets.getImage("pollen"), width / 4 - 100, height / 3 + 140, tilesize, tilesize, pollenFrame, 0, tilesize, tilesize);
+
+            push();
+            let wBeeFrame = 0;
+            if (frameCount % 20 < 10) {
+                wBeeFrame = tilesize;
+            }
+
+            scale(-1, 1);
+            image(assets.getImage("worker_bee"), -(3 * width / 4 - 30) - tilesize, height / 4 + 30, tilesize, tilesize, wBeeFrame, 0, tilesize, tilesize);
+            pop();
+            image(assets.getImage("worker_bee"), width / 4 - 30, 2 * height / 4 + 30, tilesize, tilesize, wBeeFrame, 0, tilesize, tilesize);
         }
 
         pop();
@@ -132,9 +98,10 @@ class Game {
         this.drawMenu(true);
         textAlign(CENTER, CENTER);
         rectMode(CENTER);
+        imageMode(CENTER);
         textFont(assets.getFont("options_font"));
 
-        fill(255, 255, 255);
+        fill(1, 142, 14);
         textSize(15);
         text("How to Play", width / 2, 20);
 
@@ -142,11 +109,23 @@ class Game {
         text("Click to return", width / 2, 385);
 
         textSize(12);
-        text("Use WASD to move and SPACE to jump.\n\n\n" +
-            "Aim your cannon with the mouse and click to shoot.\n\n\n" +
-            "Your bullets will bounce off walls and enemies. " +
-            "Use the ricochet to give yourself a boost!",
-            width / 2, height / 3, 300, 300);
+        text("Use AWD to move left, jump, and move right. Pressing spacebar will shoot a projectile towards your mouse. The projectile bounces - hit yourself for an extra boost!",
+            width / 4, height / 3, 300, 300);
+        assets.drawImage("controls", width / 4, 2 * height / 3);
+
+        text("You're a seed! In your search for somewhere to plant yourself, collect as much pollen as you can! Those nasty bees don't want you to have any. Make sure not to hit any bees or thorns or else you'll lose pollen for good!",
+            3 * width / 4, height / 3, 300, 300);
+        if (frameCount % 60 < 30) {
+            image(assets.getImage("pollen_large"), 3 * width / 4 + 100, 2 * height / 3 + 30, 128, 128, 0, 0, 128, 128);
+        } else {
+            image(assets.getImage("pollen_large"), 3 * width / 4 + 100, 2 * height / 3 + 30, 128, 128, 128, 0, 128, 128);
+        }
+
+        if (frameCount % 20 < 10) {
+            image(assets.getImage("worker_bee_large"), 3 * width / 4 - 100, 2 * height / 3 + 30, 128, 128, 0, 0, 128, 128);
+        } else {
+            image(assets.getImage("worker_bee_large"), 3 * width / 4 - 100, 2 * height / 3 + 30, 128, 128, 128, 0, 128, 128);
+        }
     }
 
     drawMain() {
@@ -225,6 +204,8 @@ class Game {
                 this.currentGameState = this.gameStates.INSTR;
             }
         }
+
+        this.menu_mainchar_wframes.update();
     }
 
     updateInstr() {
