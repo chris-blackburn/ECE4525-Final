@@ -38,6 +38,7 @@ class Boss extends Entity {
 
     activate() {
         this.active = true;
+        assets.loopSound("boss_music");
     }
 
     /* Take more health depending on progression */
@@ -76,7 +77,7 @@ class Boss extends Entity {
                 this.moveTimer.start();
 
                 /* Set another attraction point */
-                this.attractPointAngle = p5.Vector.fromAngle(random(0, 360));
+                this.attractPointAngle = p5.Vector.fromAngle(random(190, 350));
                 this.attractPointAngle.setMag(180);
 
             } else {

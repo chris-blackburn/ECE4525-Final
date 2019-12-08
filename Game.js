@@ -241,6 +241,8 @@ class Game {
         /* If the player has no more base health, then game over */
         if (player.health <= 0) {
             this.currentGameState = this.gameStates.LOSE;
+            assets.stopSound("boss_music");
+            assets.playSound("game_over");
             return;
         }
 
@@ -259,6 +261,8 @@ class Game {
 
         if (currentTilemap.finalBoss.health <= 0) {
             this.currentGameState = this.gameStates.WIN;
+            assets.stopSound("boss_music");
+            assets.playSound("game_win");
             return;
         }
 

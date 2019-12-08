@@ -36,7 +36,9 @@ function preload() {
   assets.addSound(loadSound('assets/seed_man_shoot'), 1, "seed_man_shoot");
   assets.addSound(loadSound('assets/seed_man_bullet_bounce'), 0.3, "seed_man_bullet_bounce");
   assets.addSound(loadSound('assets/seed_man_bullet_self'), 1, "seed_man_bullet_self");
-  /* TODO: music */
+  assets.addSound(loadSound('assets/boss_music'), 0.5, "boss_music");
+  assets.addSound(loadSound('assets/game_over'), 0.5, "game_over");
+  assets.addSound(loadSound('assets/game_win'), 0.5, "game_win");
 }
 
 function setup() {

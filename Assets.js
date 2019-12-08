@@ -43,6 +43,14 @@ class Assets {
         this.sounds[name].play();
     }
 
+    loopSound(name) {
+        this.sounds[name].loop();
+    }
+
+    stopSound(name) {
+        this.sounds[name].stop();
+    }
+
     drawImage(name, x, y, w, h) {
         image(this.images[name], x, y, w, h);
     }
