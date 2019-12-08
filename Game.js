@@ -11,6 +11,7 @@ class Game {
         };
 
         this.currentGameState = this.gameStates.MENU;
+        assets.loopSound("main_music");
 
         /* For main menu */
         this.menu_mainchar_wframes = new Keyframes([
@@ -242,6 +243,7 @@ class Game {
         if (player.health <= 0) {
             this.currentGameState = this.gameStates.LOSE;
             assets.stopSound("boss_music");
+            assets.stopSound("main_music");
             assets.playSound("game_over");
             return;
         }
@@ -262,6 +264,7 @@ class Game {
         if (currentTilemap.finalBoss.health <= 0) {
             this.currentGameState = this.gameStates.WIN;
             assets.stopSound("boss_music");
+            assets.stopSound("main_music");
             assets.playSound("game_win");
             return;
         }
@@ -275,12 +278,14 @@ class Game {
     updateLose() {
         if (mouseGotClicked) {
             this.currentGameState = this.gameStates.MENU;
+            assets.loopSound("main_music");
         }
     }
 
     upateWin() {
         if (mouseGotClicked) {
             this.currentGameState = this.gameStates.MENU;
+            assets.loopSound("main_music");
         }
 
         if (this.fallingPollen.length < 20) {

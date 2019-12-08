@@ -38,6 +38,7 @@ class Boss extends Entity {
 
     activate() {
         this.active = true;
+        assets.stopSound("main_music");
         assets.loopSound("boss_music");
     }
 

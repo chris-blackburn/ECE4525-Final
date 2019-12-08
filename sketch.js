@@ -39,6 +39,7 @@ function preload() {
   assets.addSound(loadSound('assets/boss_music'), 0.5, "boss_music");
   assets.addSound(loadSound('assets/game_over'), 0.5, "game_over");
   assets.addSound(loadSound('assets/game_win'), 0.5, "game_win");
+  assets.addSound(loadSound('assets/main_music'), 0.4, "main_music");
 }
 
 function setup() {
