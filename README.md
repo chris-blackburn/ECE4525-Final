@@ -155,3 +155,44 @@ areas will be different and are automatically generated)
 
 Just to be clear: animations will consist of cycling through severl frames in a
 sprite sheet that I will create.
+
+## Final Checkpoint
+So, the artistic feel of my game changed a bit compared to the other
+checkpoints. I wanted a more bright feel. The story is that you are a seed, and
+you're looking for a good place to plant yourself. Only problem is, the bees
+turned selfish - they are hogging on the pollen and keeping you from finding
+your spot! So, you have to go around the world and collect as much pollen as you
+can.
+
+Collected pollen acts as extra health. And for the final boss, you do more
+damage per hit depending on how much pollen you found in the world. To beat the
+game, you have to find and kill the final boss. The highest
+score is one where you collect all the pollen and don't get it.
+
+There are also hazard tiles (thorns) that do 2 damage if you hit them. I added
+some invincibility time to avoid multi-hit from the thorns (that way, you don't
+die immediately).
+
+**All artwork and sounds are original**. I made all the pixel art (the world, the
+characters, etc.) and recorded all the music and sounds (everything was vocals
+with some distortion).
+
+There are two main enemies in the world. Worker bees and the queen bee (final
+boss). The worker bees are unkillable, but you can bounce your seed spit off
+of them. They fly predictably, so you can use this to navigate the world in
+interesting ways.
+
+The queen bee is more sophisticated and fun to fight. She will find a location
+near you to spring towards (which changes as the fight progresses), and
+continuously shoots mini bees at you.
+
+If you have no pollen, hits go to your base health, and you only have 3
+hitpoints, so you're encouraged to find pollen. Also, since the boss takes more
+damage the more pollen you have, the quicker you can beat it. - another
+encourager for collecting pollen.
+
+This is not multi-level - I did some optimizations that allow the world to be as
+large as you want with no performance hit. With that, I opted for making a large
+world you could explore, rather than simple, single levels. Certain areas can
+prompt you to do something, like use your seed spit richochet to bounce you up
+higher to get some pollen. The world around you teaches you how to play.
