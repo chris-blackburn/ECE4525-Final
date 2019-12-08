@@ -108,6 +108,7 @@ class Entity {
                     if (this instanceof Player && !objs[i].collected) {
                         this.collectablesFound += 1;
                         objs[i].collected = true;
+                        assets.playSound("collect_pollen");
                     }
 
                     continue;

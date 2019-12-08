@@ -32,14 +32,15 @@ function preload() {
   assets.addFont(loadFont('assets/A_Goblin_Appears.otf'), "options_font");
   assets.addImage(loadImage('assets/grassy_tileset_ordered.png'), "grassy_tileset");
 
-  assets.addSound(loadSound('assets/seed_man_hurt'), 1, "seed_man_hurt");
-  assets.addSound(loadSound('assets/seed_man_shoot'), 1, "seed_man_shoot");
-  assets.addSound(loadSound('assets/seed_man_bullet_bounce'), 0.3, "seed_man_bullet_bounce");
-  assets.addSound(loadSound('assets/seed_man_bullet_self'), 1, "seed_man_bullet_self");
-  assets.addSound(loadSound('assets/boss_music'), 0.5, "boss_music");
-  assets.addSound(loadSound('assets/game_over'), 0.5, "game_over");
-  assets.addSound(loadSound('assets/game_win'), 0.5, "game_win");
-  assets.addSound(loadSound('assets/main_music'), 0.4, "main_music");
+  assets.addSound(loadSound('assets/seed_man_hurt.mp3'), 1, "seed_man_hurt");
+  assets.addSound(loadSound('assets/seed_man_shoot.mp3'), 1, "seed_man_shoot");
+  assets.addSound(loadSound('assets/seed_man_bullet_bounce.mp3'), 0.3, "seed_man_bullet_bounce");
+  assets.addSound(loadSound('assets/seed_man_bullet_self.mp3'), 1, "seed_man_bullet_self");
+  assets.addSound(loadSound('assets/boss_music.mp3'), 0.5, "boss_music");
+  assets.addSound(loadSound('assets/game_over.mp3'), 0.5, "game_over");
+  assets.addSound(loadSound('assets/game_win.mp3'), 0.5, "game_win");
+  assets.addSound(loadSound('assets/main_music.mp3'), 0.4, "main_music");
+  assets.addSound(loadSound('assets/collect_pollen.mp3'), 0.3, "collect_pollen");
 }
 
 function setup() {
